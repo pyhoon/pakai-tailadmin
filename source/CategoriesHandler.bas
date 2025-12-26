@@ -46,7 +46,7 @@ Private Sub RenderPage
 	main1.PageName = "categories"
 	main1.LoadContent(ContentContainer)
 	main1.LoadModal(ModalContainer)
-	main1.LoadToast(ToastContainer)
+	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As Tag = main1.View
 '	Dim body1 As Tag = page1.Child(1)
@@ -65,12 +65,12 @@ Private Sub RenderPage
 	'anchor2.cls("nav-link")
 	'anchor2.text("Users")
 	
-'	Dim doc As Document
-'	doc.Initialize
-'	doc.AppendDocType
-'	doc.Append(page1.build)
-'	App.WriteHtml2(Response, doc.ToString, App.ctx)
-	App.WriteHtml2(Response, page1.Build, App.ctx)
+	Dim doc As Document
+	doc.Initialize
+	doc.AppendDocType
+	doc.Append(page1.build)
+	App.WriteHtml2(Response, doc.ToString, App.ctx)
+	'App.WriteHtml2(Response, page1.Build, App.ctx)
 End Sub
 
 Private Sub ContentContainer As Tag
@@ -232,21 +232,21 @@ Private Sub ModalContainer As Tag
 	Return modal1
 End Sub
 
-Private Sub ToastContainer As Tag
-	Dim div1 As Tag = Div.cls("position-fixed end-0 p-3")
-	div1.sty("z-index: 2000")
-	div1.sty("bottom: 0%")
-	Dim toast1 As Tag = Div.id("toast-container").up(div1)
-	toast1.cls("toast align-items-center text-bg-success border-0")
-	toast1.attr("role", "alert")
-	Dim div2 As Tag = Div.cls("d-flex").up(toast1)
-	Dim div3 As Tag = Div.cls("toast-body").id("toast-body").up(div2)
-	div3.text("Operation successful!")
-	Dim button1 As Tag = Button.typeOf("button").up(div2)
-	button1.cls("btn-close btn-close-white me-2 m-auto")
-	button1.data("bs-dismiss", "toast")
-	Return div1
-End Sub
+'Private Sub ToastContainer As Tag
+'	Dim div1 As Tag = Div.cls("position-fixed end-0 p-3")
+'	div1.sty("z-index: 2000")
+'	div1.sty("bottom: 0%")
+'	Dim toast1 As Tag = Div.id("toast-container").up(div1)
+'	toast1.cls("toast align-items-center text-bg-success border-0")
+'	toast1.attr("role", "alert")
+'	Dim div2 As Tag = Div.cls("d-flex").up(toast1)
+'	Dim div3 As Tag = Div.cls("toast-body").id("toast-body").up(div2)
+'	div3.text("Operation successful!")
+'	Dim button1 As Tag = Button.typeOf("button").up(div2)
+'	button1.cls("btn-close btn-close-white me-2 m-auto")
+'	button1.data("bs-dismiss", "toast")
+'	Return div1
+'End Sub
 
 ' Return table HTML
 Private Sub HandleTable

@@ -433,6 +433,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
+  .top-3 {
+    top: calc(var(--spacing) * 3);
+  }
   .top-5 {
     top: calc(var(--spacing) * 5);
   }
@@ -532,6 +535,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
     -webkit-box-ordinal-group: 4;
         -ms-flex-order: 3;
             order: 3;
+  }
+  .col-span-1 {
+    grid-column: span 1 / span 1;
   }
   .col-span-2 {
     grid-column: span 2 / span 2;
@@ -753,6 +759,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
+  .h-9\.5 {
+    height: calc(var(--spacing) * 9.5);
+  }
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
@@ -829,6 +838,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   }
   .w-8 {
     width: calc(var(--spacing) * 8);
+  }
+  .w-9\.5 {
+    width: calc(var(--spacing) * 9.5);
   }
   .w-10 {
     width: calc(var(--spacing) * 10);
@@ -954,6 +966,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   }
   .max-w-\[380px\] {
     max-width: 380px;
+  }
+  .max-w-\[584px\] {
+    max-width: 584px;
   }
   .max-w-\[630px\] {
     max-width: 630px;
@@ -1765,6 +1780,9 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   .pb-11 {
     padding-bottom: calc(var(--spacing) * 11);
   }
+  .pb-20 {
+    padding-bottom: calc(var(--spacing) * 20);
+  }
   .pl-1 {
     padding-left: calc(var(--spacing) * 1);
   }
@@ -2074,6 +2092,13 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
       }
     }
   }
+  .group-hover\:text-gray-600 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-gray-600);
+      }
+    }
+  }
   .file\:mr-5 {
     &::-webkit-file-upload-button {
       margin-right: calc(var(--spacing) * 5);
@@ -2295,10 +2320,24 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
       }
     }
   }
+  .hover\:bg-gray-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-300);
+      }
+    }
+  }
   .hover\:text-brand-600 {
     &:hover {
       @media (hover: hover) {
         color: var(--color-brand-600);
+      }
+    }
+  }
+  .hover\:text-gray-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-gray-500);
       }
     }
   }
@@ -2469,6 +2508,16 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   .xsm\:w-\[358px\] {
     @media (width >= 425px) {
       width: 358px;
+    }
+  }
+  .sm\:top-6 {
+    @media (width >= 640px) {
+      top: calc(var(--spacing) * 6);
+    }
+  }
+  .sm\:right-6 {
+    @media (width >= 640px) {
+      right: calc(var(--spacing) * 6);
     }
   }
   .sm\:col-span-1 {
@@ -2686,6 +2735,11 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   .md\:p-6 {
     @media (width >= 768px) {
       padding: calc(var(--spacing) * 6);
+    }
+  }
+  .md\:pb-6 {
+    @media (width >= 768px) {
+      padding-bottom: calc(var(--spacing) * 6);
     }
   }
   .lg\:static {
@@ -3319,6 +3373,15 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
       }
     }
   }
+  .dark\:group-hover\:text-gray-200 {
+    &:is(.dark *) {
+      &:is(:where(.group):hover *) {
+        @media (hover: hover) {
+          color: var(--color-gray-200);
+        }
+      }
+    }
+  }
   .dark\:file\:border-gray-800 {
     &:is(.dark *) {
       &::-webkit-file-upload-button {
@@ -3429,6 +3492,15 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
       &:hover {
         @media (hover: hover) {
           border-color: var(--color-gray-800);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-gray-700 {
+    &:is(.dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-gray-700);
         }
       }
     }

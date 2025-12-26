@@ -49,7 +49,7 @@ Private Sub RenderPage
 	main1.LoadContent(ContentContainer)
 	main1.LoadSubContent(GitHubLink)
 	'main1.LoadModal(ModalContainer)
-	main1.LoadToast(ToastContainer)
+	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As Tag = main1.View
 '	Dim body1 As Tag = page1.Child(1)
@@ -68,12 +68,12 @@ Private Sub RenderPage
 	'anchor2.cls("nav-link")
 	'anchor2.text("Users")
 
-'	Dim doc As Document
-'	doc.Initialize
-'	doc.AppendDocType
-'	doc.Append(page1.build)
-'	App.WriteHtml2(Response, doc.ToString, App.ctx)
-	App.WriteHtml2(Response, page1.Build, App.ctx)
+	Dim doc As Document
+	doc.Initialize
+	doc.AppendDocType
+	doc.Append(page1.build)
+	App.WriteHtml2(Response, doc.ToString, App.ctx)
+	'App.WriteHtml2(Response, page1.Build, App.ctx)
 End Sub
 
 Private Sub ContentContainer As Tag
@@ -198,10 +198,7 @@ Private Sub ContentContainer As Tag
 	div11.on("click.outside", "openDropDown = false")
 	div11.cls("absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 shadow-theme-lg dark:bg-gray-dark top-full rounded-2xl dark:border-gray-800")
 	div11.sty("display: none")
-	
-	content1.x("data", "{isModalOpen: false}")
-	content1.add(ModalContainer)
-	
+		
 	'Dim button3 As Tag = Button.up(div11)
 	'button3.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	'button3.textWrap("Home")
@@ -218,6 +215,53 @@ Private Sub ContentContainer As Tag
 	container1.hxGet("/api/products/table")
 	container1.hxTrigger("load")
 	container1.text("Loading...")
+	
+	div4.x("data", "{isModalOpen: false}")
+	'div11.add(ModalContainer)
+	Dim modal1 As Tag = ModalContainer.up(div4)
+	Dim modalContent As Tag = modal1.Child(modal1.Children.Size-1)
+	
+	Dim form1 As Tag = Form.up(modalContent)
+	form1.hxPost("/api/products")
+	form1.hxTarget("#modal-messages")
+	form1.hxSwap("innerHTML")
+	H4.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Add Product").up(form1)
+	Dim modalBody As Tag = Div.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2").up(form1)
+	Div.id("modal-messages").cls("col-span-2").up(modalBody)
+	Dim group1 As Tag = Div.cls("col-span-1").up(modalBody)
+	Label.forId("category1").up(group1).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(Span.cls("text-danger").text("*"))
+	Dim div12 As Tag = Div.up(group1)
+	div12.cls("relative z-20 bg-transparent")
+	Dim select1 As Tag = CreateCategoriesDropdown(-1)
+	select1.id("category1")
+	select1.name("category")
+	select1.up(div12)
+	Dim span12 As Tag = Span.up(div12)
+	span12.cls("pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400")
+	Dim svg12 As Tag = Svg.up(span12)
+	svg12.cls("stroke-current")
+	svg12.width(20).height(20)
+	svg12.viewBox("0 0 20 20")
+	Dim path3 As Tag = SvgPath.up(svg12)
+	path3.rules("evenodd", "evenodd")
+	path3.d("M4.79175 7.396L10.0001 12.6043L15.2084 7.396")
+	path3.strokes("", "1.5", "round", "round")
+
+	Dim group2 As Tag = Div.cls("col-span-1").up(modalBody)
+	Label.up(group2).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").add(Span.cls("text-red").text("*"))
+	Input.up(group2).typeOf("text").name("code").required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+
+	Dim group3 As Tag = Div.cls("col-span-1").up(modalBody)
+	Label.up(group3).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Name ").add(Span.cls("text-danger").text("*"))
+	Input.up(group3).typeOf("text").name("name").required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+
+	Dim group4 As Tag = Div.cls("col-span-1").up(modalBody)
+	Label.up(group4).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Price ")
+	Input.up(group4).typeOf("text").name("price").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+	
+	Dim modalFooter As Tag = Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
+	Button.up(modalFooter).text("Create").typeOf("button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
+	Button.up(modalFooter).text("Close").typeOf("button").on("click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
 	
 	Return content1
 End Sub
@@ -280,25 +324,25 @@ Private Sub ModalContainer As Tag
 	path1.rules("evenodd", "evenodd")
 	path1.d("M6.04289 16.5413C5.65237 16.9318 5.65237 17.565 6.04289 17.9555C6.43342 18.346 7.06658 18.346 7.45711 17.9555L11.9987 13.4139L16.5408 17.956C16.9313 18.3466 17.5645 18.3466 17.955 17.956C18.3455 17.5655 18.3455 16.9323 17.955 16.5418L13.4129 11.9997L17.955 7.4576C18.3455 7.06707 18.3455 6.43391 17.955 6.04338C17.5645 5.65286 16.9313 5.65286 16.5408 6.04338L11.9987 10.5855L7.45711 6.0439C7.06658 5.65338 6.43342 5.65338 6.04289 6.0439C5.65237 6.43442 5.65237 7.06759 6.04289 7.45811L10.5845 11.9997L6.04289 16.5413Z")
 	path1.fill("")
-	Div.cls("modal-content").id("modal-content").up(modalDialog)
+	Div.cls("modal-content").up(modalDialog)
 	Return modal1
 End Sub
 
-Private Sub ToastContainer As Tag
-	Dim div1 As Tag = Div.cls("position-fixed end-0 p-3")
-	div1.sty("z-index: 2000")
-	div1.sty("bottom: 0%")
-	Dim toast1 As Tag = Div.id("toast-container").up(div1)
-	toast1.cls("toast align-items-center text-bg-success border-0")
-	toast1.attr("role", "alert")
-	Dim div2 As Tag = Div.cls("d-flex").up(toast1)
-	Dim div3 As Tag = Div.cls("toast-body").id("toast-body").up(div2)
-	div3.text("Operation successful!")
-	Dim button1 As Tag = Button.typeOf("button").up(div2)
-	button1.cls("btn-close btn-close-white me-2 m-auto")
-	button1.data("bs-dismiss", "toast")
-	Return div1
-End Sub
+'Private Sub ToastContainer As Tag
+'	Dim div1 As Tag = Div.cls("position-fixed end-0 p-3")
+'	div1.sty("z-index: 2000")
+'	div1.sty("bottom: 0%")
+'	Dim toast1 As Tag = Div.id("toast-container").up(div1)
+'	toast1.cls("toast align-items-center text-bg-success border-0")
+'	toast1.attr("role", "alert")
+'	Dim div2 As Tag = Div.cls("d-flex").up(toast1)
+'	Dim div3 As Tag = Div.cls("toast-body").id("toast-body").up(div2)
+'	div3.text("Operation successful!")
+'	Dim button1 As Tag = Button.typeOf("button").up(div2)
+'	button1.cls("btn-close btn-close-white me-2 m-auto")
+'	button1.data("bs-dismiss", "toast")
+'	Return div1
+'End Sub
 
 ' Return table HTML
 Private Sub HandleTable
@@ -413,14 +457,14 @@ Private Sub HandleAddModal
 	Button.typeOf("button").on("click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto").text("Close").up(modalFooter)
 	Button.typeOf("button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto").text("Create").up(modalFooter)	
 	
-	App.WriteHtml(Response, form1.Build)
+	'App.WriteHtml(Response, form1.Build)
 End Sub
 
 ' Edit modal
 Private Sub HandleEditModal
 	Dim id As String = Request.RequestURI.SubString("/api/products/edit/".Length)
 	Dim form1 As Tag = Form.init
-	form1.hxPut($"/api/products"$)
+	form1.hxPut("/api/products")
 	form1.hxTarget("#modal-messages")
 	form1.hxSwap("innerHTML")
 		
@@ -462,13 +506,13 @@ Private Sub HandleEditModal
 		Label.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").up(group2).add(Span.cls("text-red").text("*"))
 		group2.add(Input.typeOf("text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").name("code").valueOf(code))
 		
-		'Dim group3 As Tag = Div.cls("form-group").up(modalBody)
-		'group3.add(Label.text("Name ")).add(Span.cls("text-danger").text("*"))
-		'group3.add(Input.typeOf("text").cls("form-control").name("name").valueOf(name).attr3("required"))
+		Dim group3 As Tag = Div.cls("col-span-1").up(modalBody)
+		group3.add(Label.text("Name ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400")).add(Span.cls("text-danger").text("*"))
+		group3.add(Input.typeOf("text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").name("name").valueOf(name).attr3("required"))
 
-		'Dim group4 As Tag = Div.cls("form-group").up(modalBody)
-		'group4.add(Label.text("Price "))
-		'group4.add(Input.typeOf("text").cls("form-control").name("price").valueOf(NumberFormat2(price, 1, 2, 2, False)))
+		Dim group4 As Tag = Div.cls("col-span-1").up(modalBody)
+		group4.add(Label.text("Price ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"))
+		group4.add(Input.typeOf("text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").name("price").valueOf(NumberFormat2(price, 1, 2, 2, False)))
 		
 		'Dim modalFooter As Tag = Div.cls("modal-footer").up(form1)
 		'modalFooter.add(Button.cls("btn btn-primary px-3").text("Update"))
@@ -482,10 +526,10 @@ Private Sub HandleEditModal
 End Sub
 
 Private Sub CreateCategoriesDropdown (selected As Int) As Tag
-	Dim select1 As Tag = Dropdown.cls("form-select")
-	select1.attr3("required")
+	Dim select1 As Tag = Dropdown.cls("dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30")
+	select1.required
 	select1.hxGet("/api/categories/list")
-	Option.valueOf("").text("Select Category").attr3(IIf(selected < 1, "selected", "")).attr3("disabled").up(select1)
+	Option.valueOf("").text("Select Category").attr3(IIf(selected < 1, "selected", "")).up(select1)'.disabled
 
 	DB.SQL = Main.DBOpen
 	DB.Table = "tbl_categories"
@@ -495,7 +539,7 @@ Private Sub CreateCategoriesDropdown (selected As Int) As Tag
 		Dim catid As Int = row.Get("id")
 		Dim catname As String = row.Get("name")
 		If catid = selected Then
-			Option.valueOf(catid).attr3("selected").text(catname).up(select1)
+			Option.valueOf(catid).selected.text(catname).up(select1)
 		Else
 			Option.valueOf(catid).text(catname).up(select1)
 		End If
@@ -744,23 +788,88 @@ Private Sub CreateProductsRow (data As Map) As Tag
 	Dim td6 As Tag = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
 	td6.multiline
 	Dim div6 As Tag = Div.cls("flex items-center justify-center").up(td6)
-
+	div6.x("data", "{isModalOpen: false}")
+	
 	Dim anchor1 As Tag = Anchor.cls("edit mx-2").up(div6)
-	anchor1.hxGet($"/api/products/edit/${id}"$)
-	anchor1.hxTarget("#modal-content")
-	anchor1.hxTrigger("click")
-	anchor1.data("bs-toggle", "modal")
-	anchor1.data("bs-target", "#modal-container")
-	anchor1.add(Icon.cls("bi bi-pencil text-blue-600 hover:text-blue-300"))
+	'anchor1.hxGet($"/api/products/edit/${id}"$)
+	'anchor1.hxTarget("#modal-content")
+	'anchor1.hxTrigger("click")
+	'anchor1.data("bs-toggle", "modal")
+	'anchor1.data("bs-target", "#modal-container")
+	anchor1.add(Icon.cls("bi bi-pencil text-brand-600 hover:text-blue-300"))
 	anchor1.attr("title", "Edit")
+	anchor1.on("click", "isModalOpen = !isModalOpen")
+	
+	Dim modal1 As Tag = ModalContainer.up(div6)
+	Dim modalContent As Tag = modal1.Child(modal1.Children.Size-1)
+	
+	Dim form1 As Tag = Form.up(modalContent)
+	'Dim id As String = Request.RequestURI.SubString("/api/products/edit/".Length)
+	'Dim form1 As Tag = Form.init
+	form1.hxPut("/api/products")
+	form1.hxTarget("#modal-messages")
+	form1.hxSwap("innerHTML")
+		
+	DB.SQL = Main.DBOpen
+	DB.Table = "tbl_products"
+	DB.Columns = Array("category_id category", "product_code code", "product_name name", "product_price price")
+	DB.WhereParam("id = ?", id)
+	DB.Query
+	If DB.Found Then
+		Dim row As Map = DB.First
+		Dim code As String = row.Get("code")
+		Dim name As String = row.Get("name")
+		Dim price As Double = row.Get("price")
+		Dim category_id As Int = row.Get("category")
 
+		H4.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product").up(form1)
+		Dim modalBody As Tag = Div.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2").up(form1)
+		Div.id("modal-messages").cls("col-span-2").up(modalBody)
+		Input.typeOf("hidden").up(modalBody).name("id").valueOf(id)
+		Dim group1 As Tag = Div.cls("col-span-1").up(modalBody)
+		Label.forId("category2").up(group1).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(Span.cls("text-danger").text("*"))
+		Dim div12 As Tag = Div.up(group1)
+		div12.cls("relative z-20 bg-transparent")
+		Dim select1 As Tag = CreateCategoriesDropdown(category_id)
+		select1.id("category2")
+		select1.name("category")
+		select1.up(div12)
+		Dim span12 As Tag = Span.up(div12)
+		span12.cls("pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400")
+		Dim svg12 As Tag = Svg.up(span12)
+		svg12.cls("stroke-current")
+		svg12.width(20).height(20)
+		svg12.viewBox("0 0 20 20")
+		Dim path3 As Tag = SvgPath.up(svg12)
+		path3.rules("evenodd", "evenodd")
+		path3.d("M4.79175 7.396L10.0001 12.6043L15.2084 7.396")
+		path3.strokes("", "1.5", "round", "round")
+
+		Dim group2 As Tag = Div.cls("col-span-1").up(modalBody)
+		Label.up(group2).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").add(Span.cls("text-red").text("*"))
+		Input.up(group2).typeOf("text").name("code").valueOf(code).required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+
+		Dim group3 As Tag = Div.cls("col-span-1").up(modalBody)
+		Label.up(group3).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Name ").add(Span.cls("text-danger").text("*"))
+		Input.up(group3).typeOf("text").name("name").valueOf(name).required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+
+		Dim group4 As Tag = Div.cls("col-span-1").up(modalBody)
+		Label.up(group4).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Price ")
+		Input.up(group4).typeOf("text").name("price").valueOf(NumberFormat2(price, 1, 2, 2, False)).cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+	
+		Dim modalFooter As Tag = Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
+		Button.up(modalFooter).typeOf("button").text("Update").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
+		Button.up(modalFooter).typeOf("button").text("Close").on("click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	End If
+	DB.Close
+	
 	Dim anchor2 As Tag = Anchor.cls("delete mx-2").up(div6)
 	anchor2.hxGet($"/api/products/delete/${id}"$)
 	anchor2.hxTarget("#modal-content")
 	anchor2.hxTrigger("click")
 	anchor2.data("bs-toggle", "modal")
 	anchor2.data("bs-target", "#modal-container")
-	anchor2.add(Icon.cls("bi bi-trash3 text-red-600 hover:text-red-300"))
+	anchor2.add(Icon.cls("bi bi-trash3 text-danger-600 hover:text-red-300"))
 	anchor2.attr("title", "Delete")
 
 	Return tr1

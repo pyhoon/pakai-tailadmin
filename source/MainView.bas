@@ -11,7 +11,7 @@ Sub Class_Globals
 	'Private AssetsFolder As String 
 	'Private ScriptFolder As String
 	Private mModal As Tag
-	Private mToast As Tag
+	'Private mToast As Tag
 	Private mContent As Tag
 	Private mSubContent As Tag
 	Private mPageName As String
@@ -35,9 +35,9 @@ Public Sub LoadModal (Tag1 As Tag)
 	mModal = Tag1
 End Sub
 
-Public Sub LoadToast (Tag1 As Tag)
-	mToast = Tag1
-End Sub
+'Public Sub LoadToast (Tag1 As Tag)
+'	mToast = Tag1
+'End Sub
 
 Public Sub setPageName (Value As String)
 	mPageName = Value
@@ -58,18 +58,8 @@ Private Sub PageHeader As Tag
 	head1.titleWrap("$APP_TITLE$")
 	head1.linkIcon("", "favicon.ico")
 	head1.linkCss("style.css")
-	head1.linkcss("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css")
-
-	#If Bundle
-	'head1.linkCss("$SERVER_URL$/assets/css/bootstrap.min.css")
-	head1.linkCss("$SERVER_URL$/assets/css/bootstrap-icons.min.css")
-	#Else
-	'head1.cdnStyle("https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css", _
-	'"sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB")
-	'head1.linkcss("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css")
-	#End If
 	'head1.linkcss("$SERVER_URL$/assets/css/main.css?v=$VERSION$")
-	
+	head1.linkcss("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css")
 	Return head1
 End Sub
 
@@ -182,8 +172,8 @@ Private Sub PageBody As Tag
 	body1.cdnScript("https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js", _
 	"sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz")
 	#End If
-	body1.script("bundle.js")
-	body1.script("$SERVER_URL$/assets/js/app.js")
+	'body1.script("$SERVER_URL$/assets/js/app.js")
+	body1.script2(CreateMap("src": "bundle.js", "defer": ""))
 	
 	body1.FormatAttributes = True
 	Return body1
