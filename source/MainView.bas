@@ -126,8 +126,8 @@ Private Sub PageHeader As MiniHtml
 	head1.add(Meta.attr2(CreateMap("name": "viewport", "content": "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")))
 	Meta.up(head1).attr("http-equiv", "X-UA-Compatible").attr("content", "IE=edge")
 	CreateTag("title").up(head1).text("$APP_TITLE$").multiline
-	CreateTag("link").up(head1).attr("rel", "icon").attr("href", "favicon.ico")
-	head1.cdn("css", "style.css")
+	CreateTag("link").up(head1).attr("rel", "icon").attr("href", "assets/images/favicon.ico")
+	head1.cdn("css", "assets/css/style.css")
 	'head1.linkcss("$SERVER_URL$/assets/css/main.css?v=$VERSION$")
 	head1.cdn("css", "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css")
 	Return head1
@@ -186,8 +186,8 @@ Private Sub PageBody As MiniHtml
 	' Center Logo
 	Dim anchor2 As MiniHtml = Anchor.up(div2)
 	anchor2.attr("href", "index.html").cls("lg:hidden")
-	Img.cls("dark:hidden").attr("src", "src/images/logo/logo.svg").attr("alt", "Logo").up(anchor2)
-	Img.cls("hidden dark:block").attr("src", "src/images/logo/logo-dark.svg").attr("alt", "Logo").up(anchor2)
+	Img.cls("dark:hidden").attr("src", "assets/images/logo/logo.svg").attr("alt", "Logo").up(anchor2)
+	Img.cls("hidden dark:block").attr("src", "assets/images/logo/logo-dark.svg").attr("alt", "Logo").up(anchor2)
 	
 	CreateTag("").up(div2)
 	div2.comment(" Application nav menu button ")
@@ -245,7 +245,7 @@ Private Sub PageBody As MiniHtml
 	#End If
 	'body1.script("$SERVER_URL$/assets/js/app.js")
 	'body1.script2(CreateMap("src": "bundle.js", "defer": ""))
-	CreateTag("script").up(body1).attr("src", "bundle.js").attr3("defer")
+	CreateTag("script").up(body1).attr("src", "assets/js/bundle.js").attr3("defer")
 	
 	body1.FormatAttributes = True
 	Return body1
@@ -279,12 +279,12 @@ Private Sub Sidebar As MiniHtml
 	
 	Dim anchor1 As MiniHtml = Anchor.attr("href", "/").up(sidebarToggle1)
 	Dim span1 As MiniHtml = Span.cls("logo").attr(":class", "sidebarToggle ? 'hidden' : ''").up(anchor1)
-	Img.cls("dark:hidden").attr("src", "src/images/logo/logo.svg").attr("alt", "Logo").up(span1)
-	Img.cls("hidden dark:block").attr("src", "src/images/logo/logo-dark.svg").attr("alt", "Logo").up(span1)
+	Img.cls("dark:hidden").attr("src", "assets/images/logo/logo.svg").attr("alt", "Logo").up(span1)
+	Img.cls("hidden dark:block").attr("src", "assets/images/logo/logo-dark.svg").attr("alt", "Logo").up(span1)
 	
 	CreateTag("").up(anchor1)
 	
-	Img.cls("logo-icon").attr(":class", "sidebarToggle ? 'lg:block' : 'hidden'").attr("src", "src/images/logo/logo-icon.svg").attr("alt", "Logo").up(anchor1)
+	Img.cls("logo-icon").attr(":class", "sidebarToggle ? 'lg:block' : 'hidden'").attr("src", "assets/images/logo/logo-icon.svg").attr("alt", "Logo").up(anchor1)
 	aside1.comment(" SIDEBAR HEADER ")
 	CreateTag("").up(aside1)
 	Return aside1
@@ -676,7 +676,7 @@ Private Sub ContentAreaHeaderUserArea As MiniHtml
 	anchor1.attr("@click.prevent", "dropdownOpen = ! dropdownOpen")
 	Dim span1 As MiniHtml = Span.up(anchor1)
 	span1.cls("mr-3 h-11 w-11 overflow-hidden rounded-full")
-	span1.add(Img.attr("src", "src/images/user/user-20.jpg").attr("alt", "User"))
+	span1.add(Img.attr("src", "assets/images/user/user-20.jpg").attr("alt", "User"))
 	span1.multiline
 	
 	CreateTag("").up(anchor1)
