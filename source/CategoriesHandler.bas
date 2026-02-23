@@ -49,19 +49,12 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-
-	' Sample for adding additional menu link
-	'Dim list2 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-	'Dim anchor2 As MiniHtml = Anchor.href("/users").up(list2)
-	'anchor2.cls("nav-link")
-	'anchor2.text("Users")
 	
     Dim doc As MiniHtml
     doc.Initialize("")
     doc.Write("<!DOCTYPE html>")
     doc.Write(page1.build)
 	App.WriteHtml2(Response, doc.ToString, App.ctx)
-	'App.WriteHtml2(Response, page1.Build, App.ctx)
 End Sub
 
 Sub CreateTag (Name As String) As MiniHtml
@@ -235,9 +228,6 @@ Private Sub ContentContainer As MiniHtml
 	div11.cls("absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 shadow-theme-lg dark:bg-gray-dark top-full rounded-2xl dark:border-gray-800")
 	div11.sty("display: none")
 	
-	'Dim button3 As MiniHtml = Button.up(div11)
-	'button3.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
-	'button3.textWrap("Home")
 	Dim button4 As MiniHtml = Button.up(div11)
 	button4.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	button4.textWrap("Add Category")
@@ -290,20 +280,20 @@ Private Sub HandleAddModal
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 	
-	Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-	H5.cls("modal-title").text("Add Category").up(modalHeader)
-	Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal").up(modalHeader)
+	Dim modalHeader As MiniHtml = Div.up(form1).cls("modal-header")
+	H5.up(modalHeader).cls("modal-title").text("Add Category")
+	Button.up(modalHeader).attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal")
 
-	Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-	Div.attr("id", "modal-messages").up(modalBody)'.attr("hx-swap-oob", "true")
+	Dim modalBody As MiniHtml = Div.up(form1).cls("modal-body")
+	Div.up(modalBody).attr("id", "modal-messages")
 	
-	Dim group1 As MiniHtml = modalBody.add(Div.cls("form-group"))
-	Label.attr("for", "name").text("Name ").up(group1).add(Span.cls("text-danger").text("*"))
-	Input.attr("type", "text").up(group1).attr("id", "name").attr("name", "name").cls("form-control").attr3("required")
+	Dim group1 As MiniHtml = Div.up(modalBody).cls("form-group")
+	Label.up(group1).attr("for", "name").text("Name ").add(Span.cls("text-danger").text("*"))
+	Input.up(group1).attr("type", "text").attr("id", "name").attr("name", "name").cls("form-control").required
 
-	Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
-	Button.attr("type", "submit").cls("btn btn-success px-3").text("Create").up(modalFooter)
-	Button.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").text("Cancel").up(modalFooter)
+	Dim modalFooter As MiniHtml = Div.up(form1).cls("modal-footer")
+	Button.up(modalFooter).attr("type", "submit").cls("btn btn-success px-3").text("Create")
+	Button.up(modalFooter).attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").text("Cancel")
 	App.WriteHtml(Response, form1.Build)
 End Sub
 
@@ -323,19 +313,19 @@ Private Sub HandleEditModal
 	If DB.Found Then
 		Dim name As String = DB.First.Get("name")
 
-		Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-		H5.cls("modal-title").text("Edit Category").up(modalHeader)
-		Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal").up(modalHeader)
+		Dim modalHeader As MiniHtml = Div.up(form1).cls("modal-header")
+		H5.up(modalHeader).cls("modal-title").text("Edit Category")
+		Button.up(modalHeader).attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal")
 		
-		Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-		Div.attr("id", "modal-messages").up(modalBody)
-		Input.attr("type", "hidden").up(modalBody).attr("name", "id").attr("value", id)
+		Dim modalBody As MiniHtml = Div.up(form1).cls("modal-body")
+		Div.up(modalBody).attr("id", "modal-messages")
+		Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", id)
 		
-		Dim group1 As MiniHtml = Div.cls("form-group").up(modalBody)
-		Label.attr("for", "name").text("Name ").up(group1).add(Span.cls("text-danger").text("*"))
-		Input.attr("type", "text").cls("form-control").attr("id", "name").attr("name", "name").attr("value", name).attr3("required").up(group1)
+		Dim group1 As MiniHtml = Div.up(modalBody).cls("form-group")
+		Label.up(group1).attr("for", "name").text("Name ").add(Span.cls("text-danger").text("*"))
+		Input.up(group1).attr("type", "text").cls("form-control").attr("id", "name").attr("name", "name").attr("value", name).required
 
-		Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
+		Dim modalFooter As MiniHtml = Div.up(form1).cls("modal-footer")
 		Button.attr("type", "submit").cls("btn btn-primary px-3").text("Update").up(modalFooter)
 		Button.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").text("Cancel").up(modalFooter)
 	End If
@@ -359,18 +349,18 @@ Private Sub HandleDeleteModal
 	If DB.Found Then
 		Dim name As String = DB.First.Get("name")
 
-		Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-		H5.cls("modal-title").text("Delete Category").up(modalHeader)
-		Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal").up(modalHeader)
+		Dim modalHeader As MiniHtml = Div.up(form1).cls("modal-header")
+		H5.up(modalHeader).cls("modal-title").text("Delete Category")
+		Button.up(modalHeader).attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal")
 		
-		Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-		Div.attr("id", "modal-messages").up(modalBody)
-		Input.attr("type", "hidden").attr("name", "id").attr("value", id).up(modalBody)
-		CreateTag("p").text($"Delete ${name}?"$).up(modalBody)
+		Dim modalBody As MiniHtml = Div.up(form1).cls("modal-body")
+		Div.up(modalBody).attr("id", "modal-messages")
+		Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", id)
+		CreateTag("p").up(modalBody).text($"Delete ${name}?"$)
 
-		Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
-		Button.attr("type", "submit").cls("btn btn-danger px-3").text("Delete").up(modalFooter)
-		Button.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").text("Cancel").up(modalFooter)
+		Dim modalFooter As MiniHtml = Div.up(form1).cls("modal-footer")
+		Button.up(modalFooter).attr("type", "submit").cls("btn btn-danger px-3").text("Delete")
+		Button.up(modalFooter).attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").text("Cancel")
 	End If
 	DB.Close
 	App.WriteHtml(Response, form1.Build)
@@ -486,22 +476,22 @@ End Sub
 
 Private Sub CreateCategoriesTable As MiniHtml
 	Dim table1 As MiniHtml = Table.cls("min-w-full")
-	Dim thead1 As MiniHtml = Thead.cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900").up(table1)
+	Dim thead1 As MiniHtml = Thead.up(table1).cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900")
 	Dim trow1 As MiniHtml = Tr.up(thead1)
 
-	Dim th1 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv1 As MiniHtml = Div.cls("flex items-center justify-end").up(th1)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("#").up(thdiv1)
+	Dim th1 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv1 As MiniHtml = Div.up(th1).cls("flex items-center justify-end")
+	CreateTag("p").up(thdiv1).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("#")
 	
-	Dim th2 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv2 As MiniHtml = Div.cls("flex items-center").up(th2)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Name").up(thdiv2)
+	Dim th2 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv2 As MiniHtml = Div.up(th2).cls("flex items-center")
+	CreateTag("p").up(thdiv2).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Name")
 	
-	Dim th3 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv3 As MiniHtml = Div.cls("flex items-center justify-center").up(th3)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Actions").up(thdiv3)
+	Dim th3 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv3 As MiniHtml = Div.up(th3).cls("flex items-center justify-center")
+	CreateTag("p").up(thdiv3).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Actions")
 	
-	Dim tbody1 As MiniHtml = Tbody.cls("divide-y divide-gray-100 dark:divide-gray-800").up(table1)
+	Dim tbody1 As MiniHtml = Tbody.up(table1).cls("divide-y divide-gray-100 dark:divide-gray-800")
 	
 	DB.SQL = DB.Open
 	DB.Table = "tbl_categories"
@@ -521,17 +511,17 @@ Private Sub CreateCategoriesRow (data As Map) As MiniHtml
 	Dim name As String = data.Get("name")
 
 	Dim tr1 As MiniHtml = Tr
-	Dim td1 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td1 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td1.add(Div.cls("flex items-center justify-end")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(id))
 	td1.multiline
-	Dim td2 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td2 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td2.add(Div.cls("flex items-center")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(name))
 	td2.multiline
-	Dim td3 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td3 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td3.multiline
-	Dim div3 As MiniHtml = Div.cls("flex items-center justify-center").up(td3)
+	Dim div3 As MiniHtml = Div.up(td3).cls("flex items-center justify-center")
 	
-	Dim anchor1 As MiniHtml = Anchor.cls("edit text-primary mx-2").up(div3)
+	Dim anchor1 As MiniHtml = Anchor.up(div3).cls("edit text-primary mx-2")
 	anchor1.attr("hx-get", $"/api/categories/edit/${id}"$)
 	anchor1.attr("hx-target", "#modal-content")
 	anchor1.attr("hx-trigger", "click")
@@ -540,7 +530,7 @@ Private Sub CreateCategoriesRow (data As Map) As MiniHtml
 	anchor1.add(Icon.cls("bi bi-pencil"))
 	anchor1.attr("title", "Edit")
 		
-	Dim anchor2 As MiniHtml = Anchor.cls("delete text-danger mx-2").up(div3)
+	Dim anchor2 As MiniHtml = Anchor.up(div3).cls("delete text-danger mx-2")
 	anchor2.attr("hx-get", $"/api/categories/delete/${id}"$)
 	anchor2.attr("hx-target", "#modal-content")
 	anchor2.attr("hx-trigger", "click")
