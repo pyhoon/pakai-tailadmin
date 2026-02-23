@@ -19,26 +19,6 @@ Public Sub Initialize
 	App = Main.App
 End Sub
 
-'Sub Handle (req As ServletRequest, resp As ServletResponse)
-'	Request = req
-'	Response = resp
-'	Log($"${Request.Method}: ${Request.RequestURI}"$)
-'	Dim path As String = req.RequestURI
-'	If path = "/" Then
-'		'Dim www As String = App.staticfiles.Folder
-'		'Dim content As String = File.ReadString(www, "index.html")
-'		
-'		Dim index1 As MainView
-'		index1.Initialize
-'		Dim doc As Document
-'		doc.Initialize
-'		doc.AppendDocType
-'		doc.Append(index1.View.Build)
-'		'App.WriteHtml(Response, doc.ToString)
-'		App.WriteHtml2(Response, doc.ToString, Main.App.ctx)
-'	End If
-'End Sub
-
 Sub Handle (req As ServletRequest, resp As ServletResponse)
 	Request = req
 	Response = resp
@@ -71,27 +51,6 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-'	Dim body1 As MiniHtml = page1.Child(1)
-'	Dim nav1 As MiniHtml = body1.Child(1)
-'	Dim container1 As MiniHtml = nav1.Child(0)
-'	Dim navbar1 As MiniHtml = container1.Child(3)
-'	Dim ulist1 As MiniHtml = navbar1.Child(0)
-'	Dim list1 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-'	Dim anchor1 As MiniHtml = Anchor.href("/categories").up(list1)
-'	anchor1.cls("nav-link")
-'	anchor1.text("Categories")
-
-	' Sample for adding additional menu link
-	'Dim list2 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-	'Dim anchor2 As MiniHtml = Anchor.href("/users").up(list1)
-	'anchor2.cls("nav-link")
-	'anchor2.text("Users")
-
-'	Dim doc As Document
-'	doc.Initialize
-'	doc.AppendDocType
-'	doc.Append(page1.build)
-'	App.WriteHtml2(Response, doc.ToString, App.ctx)
 	App.WriteHtml2(Response, page1.Build, App.ctx)
 End Sub
 
@@ -187,12 +146,6 @@ Private Sub ContentContainer As MiniHtml
 
 	Dim col2 As MiniHtml = Div.cls("col-md-6 col-lg-6").up(row1)
 	Dim div2 As MiniHtml = Div.cls("float-end mt-2").up(col2)
-
-	'Dim anchor1 As MiniHtml = Anchor.up(div2)
-	'anchor1.attr("href", "$SERVER_URL$/categories")
-	'anchor1.cls("btn btn-primary me-2")
-	'anchor1.add(Icon.cls("bi bi-list me-2"))
-	'anchor1.text("Show Category")
 
 	Dim button2 As MiniHtml = Button.up(div2)
 	button2.cls("btn btn-success ml-2")
