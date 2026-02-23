@@ -52,21 +52,6 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-'	Dim body1 As MiniHtml = page1.Child(1)
-'	Dim nav1 As MiniHtml = body1.Child(1)
-'	Dim container1 As MiniHtml = nav1.Child(0)
-'	Dim navbar1 As MiniHtml = container1.Child(3)
-'	Dim ulist1 As MiniHtml = navbar1.Child(0)
-'	Dim list1 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-'	Dim anchor1 As MiniHtml = Anchor.href("/categories").up(list1)
-'	anchor1.cls("nav-link")
-'	anchor1.text("Categories")
-
-	' Sample for adding additional menu link
-	'Dim list2 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-	'Dim anchor2 As MiniHtml = Anchor.href("/users").up(list1)
-	'anchor2.cls("nav-link")
-	'anchor2.text("Users")
 
     Dim doc As MiniHtml
     doc.Initialize("")
@@ -163,40 +148,6 @@ Sub Td As MiniHtml
 End Sub
 
 Private Sub ContentContainer As MiniHtml
-'	Dim content1 As MiniHtml = Div.cls("row mt-3")
-'	Dim col12 As MiniHtml = Div.cls("col-md-12").up(content1)
-'	Dim form1 As MiniHtml = Form.cls("form mb-3").up(col12)
-'	Dim row1 As MiniHtml = Div.cls("row").up(form1)
-'	Dim col1 As MiniHtml = Div.cls("col-md-6 col-lg-6").up(row1)
-'
-'	Dim input_group1 As MiniHtml = col1.add(Div.cls("input-group mb-3"))
-'	input_group1.add(Label.attr("for", "keyword").cls("input-group-text mt-2").text("Search"))
-'	input_group1.add(Input.attr("type", "text").cls("form-control col-md-6 mt-2").attr("id", "keyword").attr("name", "keyword"))
-'
-'	Dim searchBtn As MiniHtml = input_group1.add(Button.cls("btn btn-danger btn-md pl-3 pr-3 ml-3 mt-2").text("Submit"))
-'	searchBtn.attr("hx-post", "/api/products/search")
-'	searchBtn.attr("hx-target", "#products-container")
-'	searchBtn.attr("hx-swap", "innerHTML")
-'
-'	Dim col2 As MiniHtml = Div.cls("col-md-6 col-lg-6").up(row1)
-'	Dim div2 As MiniHtml = Div.cls("float-end mt-2").up(col2)
-'
-'	'Dim anchor1 As MiniHtml = Anchor.up(div2)
-'	'anchor1.attr("href", "$SERVER_URL$/categories")
-'	'anchor1.cls("btn btn-primary me-2")
-'	'anchor1.add(Icon.cls("bi bi-list me-2"))
-'	'anchor1.text("Show Category")
-'
-'	Dim button2 As MiniHtml = Button.up(div2)
-'	button2.cls("btn btn-success ml-2")
-'	button2.attr("hx-get", "/api/products/add")
-'	button2.attr("hx-target", "#modal-content")
-'	button2.attr("hx-trigger", "click")
-'	button2.attr("data-bs-toggle", "modal")
-'	button2.attr("data-bs-target", "#modal-container")
-'	button2.add(Icon.cls("bi bi-plus-lg me-2"))
-'	button2.text("Add Product")
-
 	Dim content1 As MiniHtml = Div.cls("mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6")
 	content1.comment(" Breadcrumb Start ")
 	Dim bread1 As MiniHtml = Div.attr("x-data", "{ pageName: `Categories`}").up(content1)
@@ -284,10 +235,7 @@ Private Sub ContentContainer As MiniHtml
 	div11.attr("@click.outside", "openDropDown = false")
 	div11.cls("absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 shadow-theme-lg dark:bg-gray-dark top-full rounded-2xl dark:border-gray-800")
 	div11.sty("display: none")
-		
-	'Dim button3 As MiniHtml = Button.up(div11)
-	'button3.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
-	'button3.textWrap("Home")
+	
 	Dim button4 As MiniHtml = Button.up(div11)
 	button4.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	button4.textWrap("Add Product")
@@ -296,14 +244,12 @@ Private Sub ContentContainer As MiniHtml
 	Dim container1 As MiniHtml = Div.up(div4)
 	container1.cls("max-w-full overflow-x-auto custom-scrollbar")
 
-	'Dim container1 As MiniHtml = Div.up(col12)
 	container1.attr("id", "products-container")
 	container1.attr("hx-get", "/api/products/table")
 	container1.attr("hx-trigger", "load")
 	container1.text("Loading...")
 	
 	div4.attr("x-data", "{isModalOpen: false}")
-	'div11.add(ModalContainer)
 	Dim modal1 As MiniHtml = ModalContainer.up(div4)
 	Dim modalContent As MiniHtml = modal1.Child(modal1.Children.Size-1)
 	
@@ -353,14 +299,12 @@ Private Sub ContentContainer As MiniHtml
 End Sub
 
 Private Sub GitHubLink As MiniHtml
-	Dim div1 As MiniHtml = Div '.cls("mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6")
-	'Dim div2 As MiniHtml = Div.up(div1)
+	Dim div1 As MiniHtml = Div
 	div1.cls("text-center flex flex-col items-center justify-center")
 	Dim anchor1 As MiniHtml = Anchor.up(div1)
 	anchor1.attr("href", "https://github.com/pyhoon/pakai-server-b4j")
 	anchor1.cls("text-brand-500 mr-1")
 	anchor1.attr("aria-label", "github").attr("title", "GitHub").attr("target", "_blank")
-	'Dim span1 As MiniHtml = Span.up(anchor1)'.sty("vertical-align: middle")
 	
 	Dim svg1 As MiniHtml = Svg.up(anchor1)
 	'svg1.attr("aria-hidden", "true")
@@ -368,7 +312,6 @@ Private Sub GitHubLink As MiniHtml
 	svg1.attr("width", 24).attr("height", 24)
 	'svg1.attr("version", "1.1")
 	svg1.attr("viewBox", "0 0 20 20")
-	'svg1.attr("viewBox", "0 0 20 20")
 	Dim path1 As MiniHtml = SvgPath.up(svg1)
 	'path1.attr("fill-rule", "evenodd").attr("clip-rule", "evenodd")
 	path1.attr("fill-rule", "evenodd")
@@ -376,23 +319,10 @@ Private Sub GitHubLink As MiniHtml
 	path1.attr("stroke", "").attr("stroke-width", "1.5").attr("stroke-linecap", "round").attr("stroke-linejoin", "round")
 	path1.attr("fill", "")
 	path1.Mode = "self"
-	'anchor1.text("GitHub")
-'	Dim anchor2 As MiniHtml = Anchor.up(div1)
-'	anchor2.attr("href", "https://github.com/pyhoon/pakai-server-b4j")
-'	anchor2.sty("text-decoration: none")
-'	anchor2.attr("target", "_blank")
-'	Span.sty("vertical-align: middle").text("Visit Pakai GitHub repository").up(anchor2)
 	Return div1
 End Sub
 
 Private Sub ModalContainer As MiniHtml
-'	Dim modal1 As MiniHtml = Div.attr("id", "modal-container")
-'	modal1.cls("modal fade")
-'	modal1.attr("tabindex", "-1")
-'	modal1.attr("aria-hidden", "true")
-'	Dim modalDialog As MiniHtml = Div.up(modal1).cls("modal-dialog modal-dialog-centered")
-'	Div.cls("modal-content").attr("id", "modal-content").up(modalDialog)
-	
 	Dim modal1 As MiniHtml = Div.attr("x-show", "isModalOpen").attr("id", "modal-container")
 	modal1.cls("fixed inset-0 flex items-center justify-center p-5 overflow-y-auto modal z-99999")
 	modal1.sty("display: none")
@@ -501,49 +431,26 @@ Private Sub HandleAddModal
 	form1.attr("hx-post", "/api/products")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
-
-	'Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-	'modalHeader.add(H5.cls("modal-title").text("Add Product"))
-	'modalHeader.add(Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal"))
-	H4.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Add Product").up(form1)
+	H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Add Product")
 	
-	'Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-	Dim modalBody As MiniHtml = Div.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2").up(form1)
-	Div.attr("id", "modal-messages").up(modalBody)
+	Dim modalBody As MiniHtml = Div.up(form1)
+	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+	Div.up(modalBody).attr("id", "modal-messages")
 	
-	'Dim group1 As MiniHtml = Div.cls("form-group").up(modalBody)
-	'Label.attr("for", "category1").text("Category ").up(group1).add(Span.cls("text-danger").text("*"))
-	Dim group1 As MiniHtml = Div.cls("col-span-1").up(modalBody)
+	Dim group1 As MiniHtml = Div.up(modalBody).cls("col-span-1")
 	Label.attr("for", "category2").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").up(group1).add(Span.cls("text-danger")).text("*")
-	Dim select1 As MiniHtml = CreateCategoriesDropdown(-1)
+	Dim select1 As MiniHtml = CreateCategoriesDropdown(-1).up(group1)
 	select1.attr("id", "category1")
 	select1.attr("name", "category")
-	select1.up(group1)
-
-	'Dim group2 As MiniHtml = Div.cls("form-group").up(modalBody)
-	'group2.add(Label.text("Code ")).add(Span.cls("text-danger").text("*"))
-	'group2.add(Input.attr("type", "text").attr("name", "code").cls("form-control").attr3("required"))
-	Dim group2 As MiniHtml = Div.cls("col-span-1").up(modalBody)
-	Label.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").up(group2).add(Span.cls("text-red").text("*"))
-	group2.add(Input.attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "code").required)
-
-	'Dim group3 As MiniHtml = Div.cls("form-group").up(modalBody)
-	'group3.add(Label.text("Name ")).add(Span.cls("text-danger").text("*"))
-	'group3.add(Input.attr("type", "text").attr("name", "name").cls("form-control").attr3("required"))
-
-	'Dim group4 As MiniHtml = Div.cls("form-group").up(modalBody)
-	'group4.add(Label.text("Price "))
-	'group4.add(Input.attr("type", "text").attr("name", "price").cls("form-control"))
-
-	'Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
-	'modalFooter.add(Button.attr("type", "submit").cls("btn btn-success px-3").text("Create"))
-	'modalFooter.add(Input.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").attr("value", "Cancel"))
 	
-	Dim modalFooter As MiniHtml = Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
-	Button.attr("type", "button").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto").text("Close").up(modalFooter)
-	Button.attr("type", "button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto").text("Create").up(modalFooter)	
+	Dim group2 As MiniHtml = Div.up(modalBody)
+	group2.cls("col-span-1")
+	Label.up(group2).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").add(Span.cls("text-red").text("*"))
+	Input.up(group2).attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "code").required
 	
-	'App.WriteHtml(Response, form1.Build)
+	Dim modalFooter As MiniHtml = Div.up(form1).cls("flex items-center justify-end w-full gap-3 mt-6")
+	Button.up(modalFooter).attr("type", "button").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto").text("Close")
+	Button.up(modalFooter).attr("type", "button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto").text("Create")
 End Sub
 
 ' Edit modal
@@ -566,46 +473,34 @@ Private Sub HandleEditModal
 		Dim price As Double = row.Get("price")
 		Dim category_id As Int = row.Get("category")
 
-		'Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-		'H5.cls("modal-title").text("Edit Product").up(modalHeader)
-		'Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal").up(modalHeader)
-		H4.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product").up(form1)
+		H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product")
 		
-		'Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-		Dim modalBody As MiniHtml = Div.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2").up(form1)
-		Div.attr("id", "modal-messages").up(modalBody)
-		Input.attr("type", "hidden").up(modalBody).attr("name", "id").attr("value", id)
+		Dim modalBody As MiniHtml = Div.up(form1).cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+		Div.up(modalBody).attr("id", "modal-messages")
+		Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", id)
 		
-		'Dim group1 As MiniHtml = Div.cls("form-group").up(modalBody)
-		'Label.attr("for", "category2").text("Category ").up(group1).add(Span.cls("text-danger")).text("*")
-		Dim group1 As MiniHtml = Div.cls("col-span-1").up(modalBody)
-		Label.attr("for", "category2").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").up(group1).add(Span.cls("text-danger")).text("*")
+		Dim group1 As MiniHtml = Div.up(modalBody).cls("col-span-1")
+		Label.up(group1).attr("for", "category2").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(Span.cls("text-danger")).text("*")
 		Dim select1 As MiniHtml = CreateCategoriesDropdown(category_id)
 		select1.attr("id", "category2")
 		select1.attr("name", "category")
 		select1.up(group1)
 		
-		'Dim group2 As MiniHtml = Div.cls("form-group").up(modalBody)
-		'group2.add(Label.text("Code ")).add(Span.cls("text-danger").text("*"))
-		'group2.add(Input.attr("type", "text").cls("form-control").attr("name", "code").attr("value", code))
 		Dim group2 As MiniHtml = Div.cls("col-span-1").up(modalBody)
 		Label.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").up(group2).add(Span.cls("text-red").text("*"))
 		group2.add(Input.attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "code").attr("value", code))
 		
 		Dim group3 As MiniHtml = Div.cls("col-span-1").up(modalBody)
-		group3.add(Label.text("Name ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400")).add(Span.cls("text-danger").text("*"))
-		group3.add(Input.attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "name").attr("value", name).attr3("required"))
+		Label.up(group3).text("Name ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").add(Span.cls("text-danger").text("*"))
+		Input.up(group3).attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "name").attr("value", name).required
 
 		Dim group4 As MiniHtml = Div.cls("col-span-1").up(modalBody)
-		group4.add(Label.text("Price ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"))
-		group4.add(Input.attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "price").attr("value", NumberFormat2(price, 1, 2, 2, False)))
+		Label.up(group4).text("Price ").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400")
+		Input.up(group4).attr("type", "text").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800").attr("name", "price").attr("value", NumberFormat2(price, 1, 2, 2, False))
 		
-		'Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
-		'modalFooter.add(Button.cls("btn btn-primary px-3").text("Update"))
-		'modalFooter.add(Input.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").attr("value", "Cancel"))
-		Dim modalFooter As MiniHtml = Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
-		Button.attr("type", "button").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto").text("Close").up(modalFooter)
-		Button.attr("type", "button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto").text("Update").up(modalFooter)	
+		Dim modalFooter As MiniHtml = Div.up(form1).cls("flex items-center justify-end w-full gap-3 mt-6")
+		Button.up(modalFooter).attr("type", "button").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto").text("Close")
+		Button.up(modalFooter).attr("type", "button").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto").text("Update")
 	End If
 	DB.Close
 	App.WriteHtml(Response, form1.Build)
@@ -615,7 +510,7 @@ Private Sub CreateCategoriesDropdown (selected As Int) As MiniHtml
 	Dim select1 As MiniHtml = CreateTag("select").cls("dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30")
 	select1.required
 	select1.attr("hx-get", "/api/categories/list")
-	CreateTag("option").attr("value", "").text("Select Category").attr3(IIf(selected < 1, "selected", "")).up(select1)'.disabled
+	CreateTag("option").up(select1).attr("value", "").text("Select Category").attr3(IIf(selected < 1, "selected", ""))'.disabled
 
 	DB.SQL = DB.Open
 	DB.Table = "tbl_categories"
@@ -652,18 +547,18 @@ Private Sub HandleDeleteModal
 		Dim code As String = row.Get("code")
 		Dim name As String = row.Get("name")
 
-		Dim modalHeader As MiniHtml = Div.cls("modal-header").up(form1)
-		H5.cls("modal-title").text("Delete Product").up(modalHeader)
-		Button.attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal").up(modalHeader)
+		Dim modalHeader As MiniHtml = Div.up(form1).cls("modal-header")
+		H5.up(modalHeader).cls("modal-title").text("Delete Product")
+		Button.up(modalHeader).attr("type", "button").cls("btn-close").attr("data-bs-dismiss", "modal")
 		
-		Dim modalBody As MiniHtml = Div.cls("modal-body").up(form1)
-		Div.attr("id", "modal-messages").up(modalBody)
-		Input.attr("type", "hidden").attr("name", "id").attr("value", id).up(modalBody)
-		CreateTag("p").text($"Delete (${code}) ${name}?"$).up(modalBody)
+		Dim modalBody As MiniHtml = Div.up(form1).cls("modal-body")
+		Div.up(modalBody).attr("id", "modal-messages")
+		Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", id)
+		CreateTag("p").up(modalBody).text($"Delete (${code}) ${name}?"$)
 		
-		Dim modalFooter As MiniHtml = Div.cls("modal-footer").up(form1)
-		Button.cls("btn btn-danger px-3").text("Delete").up(modalFooter)
-		Input.attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").attr("value", "Cancel").up(modalFooter)
+		Dim modalFooter As MiniHtml = Div.up(form1).cls("modal-footer")
+		Button.up(modalFooter).cls("btn btn-danger px-3").text("Delete")
+		Input.up(modalFooter).attr("type", "button").cls("btn btn-secondary px-3").attr("data-bs-dismiss", "modal").attr("value", "Cancel")
 	End If
 	DB.Close
 	App.WriteHtml(Response, form1.Build)
@@ -784,42 +679,34 @@ End Sub
 
 Private Sub CreateProductsTable As MiniHtml
 	Dim table1 As MiniHtml = Table.cls("min-w-full")
-	Dim thead1 As MiniHtml = Thead.cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900").up(table1)
+	Dim thead1 As MiniHtml = Thead.up(table1).cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900")
 	Dim trow1 As MiniHtml = Tr.up(thead1)
 	
-	Dim th1 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv1 As MiniHtml = Div.cls("flex items-center justify-end").up(th1)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("#").up(thdiv1)
+	Dim th1 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv1 As MiniHtml = Div.up(th1).cls("flex items-center justify-end")
+	CreateTag("p").up(thdiv1).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("#")
 	
-	Dim th2 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv2 As MiniHtml = Div.cls("flex items-center").up(th2)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Code").up(thdiv2)
+	Dim th2 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv2 As MiniHtml = Div.up(th2).cls("flex items-center")
+	CreateTag("p").up(thdiv2).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Code")
 	
-	Dim th3 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv3 As MiniHtml = Div.cls("flex items-center").up(th3)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Name").up(thdiv3)
+	Dim th3 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv3 As MiniHtml = Div.up(th3).cls("flex items-center")
+	CreateTag("p").up(thdiv3).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Name")
 	
-	Dim th4 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv4 As MiniHtml = Div.cls("flex items-center").up(th4)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Category").up(thdiv4)
+	Dim th4 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv4 As MiniHtml = Div.up(th4).cls("flex items-center")
+	CreateTag("p").up(thdiv4).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Category")
 	
-	Dim th5 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv5 As MiniHtml = Div.cls("flex items-center justify-end").up(th5)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Price").up(thdiv5)
+	Dim th5 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv5 As MiniHtml = Div.up(th5).cls("flex items-center justify-end")
+	CreateTag("p").up(thdiv5).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Price")
 	
-	Dim th6 As MiniHtml = Th.cls("px-6 py-3 whitespace-nowrap").up(trow1)
-	Dim thdiv6 As MiniHtml = Div.cls("flex items-center justify-center").up(th6)
-	CreateTag("p").cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Actions").up(thdiv6)
+	Dim th6 As MiniHtml = Th.up(trow1).cls("px-6 py-3 whitespace-nowrap")
+	Dim thdiv6 As MiniHtml = Div.up(th6).cls("flex items-center justify-center")
+	CreateTag("p").up(thdiv6).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Actions")
 	
-	Dim tbody1 As MiniHtml = Tbody.cls("divide-y divide-gray-100 dark:divide-gray-800").up(table1)
-	
-'	thead1.add(Th.sty("text-align: right; width: 50px").text("#"))
-'	thead1.add(Th.text("Code"))
-'	thead1.add(Th.text("Name"))
-'	thead1.add(Th.text("Category"))
-'	thead1.add(Th.sty("text-align: right").text("Price"))
-'	thead1.add(Th.sty("text-align: center; width: 120px").text("Actions"))
-'	Dim tbody1 As MiniHtml = table1.add(Tbody.init)
+	Dim tbody1 As MiniHtml = Tbody.up(table1).cls("divide-y divide-gray-100 dark:divide-gray-800")
 
 	DB.SQL = DB.Open
 	DB.Table = "tbl_products p"
@@ -842,46 +729,33 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 	Dim price As Double = data.Get("price")
 	Dim category As String = data.Get("category")
 
-'	Dim tr1 As MiniHtml = Tr
-'	tr1.add(Td.cls("align-middle").sty("text-align: right").text(id))
-'	tr1.add(Td.cls("align-middle").text(code))
-'	tr1.add(Td.cls("align-middle").text(name))
-'	tr1.add(Td.cls("align-middle").text(category))
-'	tr1.add(Td.cls("align-middle").sty("text-align: right").text(NumberFormat2(price, 1, 2, 2, True)))
-'	Dim td6 As MiniHtml = Td.cls("align-middle text-center px-1 py-1").up(tr1)
-
 	Dim tr1 As MiniHtml = Tr
-	Dim td1 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td1 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td1.add(Div.cls("flex items-center justify-end")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(id))
 	td1.multiline
 	
-	Dim td2 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td2 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td2.add(Div.cls("flex items-center")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(code))
 	td2.multiline
 	
-	Dim td3 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td3 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td3.add(Div.cls("flex items-center")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(name))
 	td3.multiline
 	
-	Dim td4 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td4 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td4.add(Div.cls("flex items-center")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(category))
 	td4.multiline
 	
-	Dim td5 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td5 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td5.add(Div.cls("flex items-center justify-end")).add(CreateTag("p").cls("text-gray-700 text-theme-sm dark:text-gray-400").text(NumberFormat2(price, 1, 2, 2, True)))
 	td5.multiline
 	
-	Dim td6 As MiniHtml = Td.cls("px-6 py-3 whitespace-nowrap").up(tr1)
+	Dim td6 As MiniHtml = Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	td6.multiline
-	Dim div6 As MiniHtml = Div.cls("flex items-center justify-center").up(td6)
+	Dim div6 As MiniHtml = Div.up(td6).cls("flex items-center justify-center")
 	div6.attr("x-data", "{isModalOpen: false}")
 	
-	Dim anchor1 As MiniHtml = Anchor.cls("edit mx-2").up(div6)
-	'anchor1.attr("hx-get", $"/api/products/edit/${id}"$)
-	'anchor1.attr("hx-target", "#modal-content")
-	'anchor1.attr("hx-trigger", "click")
-	'anchor1.attr("data-bs-toggle", "modal")
-	'anchor1.attr("data-bs-target", "#modal-container")
+	Dim anchor1 As MiniHtml = Anchor.up(div6).cls("edit mx-2")
 	anchor1.add(Icon.cls("bi bi-pencil text-brand-600 hover:text-blue-300"))
 	anchor1.attr("title", "Edit")
 	anchor1.attr("@click", "isModalOpen = !isModalOpen")
@@ -890,8 +764,6 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 	Dim modalContent As MiniHtml = modal1.Child(modal1.Children.Size-1)
 	
 	Dim form1 As MiniHtml = Form.up(modalContent)
-	'Dim id As String = Request.RequestURI.SubString("/api/products/edit/".Length)
-	'Dim form1 As MiniHtml = Form
 	form1.attr("hx-put", "/api/products")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
@@ -908,18 +780,17 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 		Dim price As Double = row.Get("price")
 		Dim category_id As Int = row.Get("category")
 
-		H4.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product").up(form1)
-		Dim modalBody As MiniHtml = Div.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2").up(form1)
-		Div.attr("id", "modal-messages").cls("col-span-2").up(modalBody)
-		Input.attr("type", "hidden").up(modalBody).attr("name", "id").attr("value", id)
-		Dim group1 As MiniHtml = Div.cls("col-span-1").up(modalBody)
-		Label.attr("for", "category2").up(group1).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(Span.cls("text-danger").text("*"))
+		H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product")
+		Dim modalBody As MiniHtml = Div.up(form1).cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+		Div.up(modalBody).attr("id", "modal-messages").cls("col-span-2")
+		Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", id)
+		Dim group1 As MiniHtml = Div.up(modalBody).cls("col-span-1")
+		Label.up(group1).attr("for", "category2").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(Span.cls("text-danger").text("*"))
 		Dim div12 As MiniHtml = Div.up(group1)
 		div12.cls("relative z-20 bg-transparent")
-		Dim select1 As MiniHtml = CreateCategoriesDropdown(category_id)
+		Dim select1 As MiniHtml = CreateCategoriesDropdown(category_id).up(div12)
 		select1.attr("id", "category2")
 		select1.attr("name", "category")
-		select1.up(div12)
 		Dim span12 As MiniHtml = Span.up(div12)
 		span12.cls("pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400")
 		Dim svg12 As MiniHtml = Svg.up(span12)
@@ -931,7 +802,7 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 		path3.attr("d", "M4.79175 7.396L10.0001 12.6043L15.2084 7.396")
 		path3.attr("stroke", "").attr("stroke-width", "1.5").attr("stroke-linecap", "round").attr("stroke-linejoin", "round")
 
-		Dim group2 As MiniHtml = Div.cls("col-span-1").up(modalBody)
+		Dim group2 As MiniHtml = Div.up(modalBody).cls("col-span-1")
 		Label.up(group2).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").add(Span.cls("text-red").text("*"))
 		Input.up(group2).attr("type", "text").attr("name", "code").attr("value", code).required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
 
@@ -949,7 +820,7 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 	End If
 	DB.Close
 	
-	Dim anchor2 As MiniHtml = Anchor.cls("delete mx-2").up(div6)
+	Dim anchor2 As MiniHtml = Anchor.up(div6).cls("delete mx-2")
 	anchor2.attr("hx-get", $"/api/products/delete/${id}"$)
 	anchor2.attr("hx-target", "#modal-content")
 	anchor2.attr("hx-trigger", "click")
