@@ -19,12 +19,11 @@ Library4=minijs
 Library5=miniormutils
 Module1=CategoriesHandler
 Module2=HttpsFilter
-Module3=IndexHandler
-Module4=MainView
-Module5=ProductsHandler
+Module3=MainView
+Module4=ProductsHandler
 NumberOfFiles=4
 NumberOfLibraries=5
-NumberOfModules=5
+NumberOfModules=4
 Version=10.3
 @EndOfDesignText@
 #Region Project Attributes
@@ -68,7 +67,6 @@ Sub AppStart (Args() As String)
 	App.ssl.Enabled = True
 	App.RedirectToHttps = True
 	#End If
-	'App.Get("", "IndexHandler")
 	App.Get("", "ProductsHandler")
 	App.Get("/categories", "CategoriesHandler")
 	App.Rest("/api/products/*", "ProductsHandler")
