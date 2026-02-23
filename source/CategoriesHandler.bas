@@ -49,15 +49,6 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-'	Dim body1 As MiniHtml = page1.Child(1)
-'	Dim nav1 As MiniHtml = body1.Child(1)
-'	Dim container1 As MiniHtml = nav1.Child(0)
-'	Dim navbar1 As MiniHtml = container1.Child(3)
-'	Dim ulist1 As MiniHtml = navbar1.Child(0)
-'	Dim list1 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
-'	Dim anchor1 As MiniHtml = Anchor.href("#").up(list1)
-'	anchor1.cls("nav-link")
-'	anchor1.text("Categories")
 
 	' Sample for adding additional menu link
 	'Dim list2 As MiniHtml = Li.cls("nav-item d-block d-lg-block").up(ulist1)
@@ -156,31 +147,6 @@ Sub Td As MiniHtml
 End Sub
 
 Private Sub ContentContainer As MiniHtml
-'	Dim content1 As MiniHtml = Div.cls("row mt-3 text-center align-items-center justify-content-center")
-'	Dim col1 As MiniHtml = Div.cls("col-md-12 col-lg-6").up(content1)
-'	Dim form1 As MiniHtml = Form.cls("form mb-3").action("").up(col1)
-'	Dim row1 As MiniHtml = Div.cls("row").up(form1)
-'	Dim col2 As MiniHtml = Div.cls("col-md-6 col-lg-6 text-start").up(row1)
-'	H3.text("CATEGORY LIST").up(col2)
-'	Dim div1 As MiniHtml = Div.cls("col-md-6 col-lg-6").up(row1)
-'	Dim div2 As MiniHtml = Div.cls("text-end mt-2").up(div1)
-'	
-'	Dim anchor1 As MiniHtml = Anchor.up(div2)
-'	anchor1.attr("href", "$SERVER_URL$")
-'	anchor1.cls("btn btn-primary me-2")
-'	anchor1.add(Icon.cls("bi bi-house me-2"))
-'	anchor1.text("Home")
-'
-'	Dim button2 As MiniHtml = Button.up(div2)
-'	button2.cls("btn btn-success ml-2")
-'	button2.attr("hx-get", "/api/categories/add")
-'	button2.attr("hx-target", "#modal-content")
-'	button2.attr("hx-trigger", "click")
-'	button2.attr("data-bs-toggle", "modal")
-'	button2.attr("data-bs-target", "#modal-container")
-'	button2.add(Icon.cls("bi bi-plus-lg me-2"))
-'	button2.text("Add Category")
-
 	Dim content1 As MiniHtml = Div.cls("mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6")
 	content1.comment(" Breadcrumb Start ")
 	Dim bread1 As MiniHtml = Div.attr("x-data", "{ pageName: `Categories`}").up(content1)
@@ -276,26 +242,8 @@ Private Sub ContentContainer As MiniHtml
 	button4.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	button4.textWrap("Add Category")
 	
-'	Dim anchor1 As MiniHtml = Anchor.up(div9)
-'	anchor1.attr("href", "$SERVER_URL$")
-'	anchor1.cls("btn btn-primary me-2")
-'	anchor1.add(Icon.cls("bi bi-house me-2"))
-'	anchor1.text("Home")
-'
-'	Dim button2 As MiniHtml = Button.up(div9)
-'	button2.cls("btn btn-success ml-2")
-'	button2.attr("hx-get", "/api/categories/add")
-'	button2.attr("hx-target", "#modal-content")
-'	button2.attr("hx-trigger", "click")
-'	button2.attr("data-bs-toggle", "modal")
-'	button2.attr("data-bs-target", "#modal-container")
-'	button2.add(Icon.cls("bi bi-plus-lg me-2"))
-'	button2.text("Add Category")
-	
 	Dim container1 As MiniHtml = Div.up(div4)
 	container1.cls("max-w-full overflow-x-auto custom-scrollbar")
-
-	'Dim container1 As MiniHtml = Div.up(div5)
 	container1.attr("id", "categories-container")
 	container1.attr("hx-get", "/api/categories/table")
 	container1.attr("hx-trigger", "load")
@@ -537,60 +485,6 @@ Private Sub HandleCategories
 End Sub
 
 Private Sub CreateCategoriesTable As MiniHtml
-	
-'	Dim div1 As MiniHtml = Div.cls("space-y-5 sm:space-y-6")
-'	Dim div2 As MiniHtml = Div.cls("rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]").up(div1)
-'	Dim div3 As MiniHtml = Div.cls("border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800").up(div2)	
-'	Dim div4 As MiniHtml = Div.cls("overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]").up(div3)
-	
-'	Dim div5 As MiniHtml = Div.cls("flex flex-col gap-5 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between").up(div4)
-'	div5.add(Div.add(H3.cls("text-lg font-semibold text-gray-800 dark:text-white/90").textWrap("Categories")))
-'	Dim div6 As MiniHtml = div5.add(Div.cls("flex flex-col gap-3 sm:flex-row sm:items-center"))
-'	
-'	Dim form1 As MiniHtml = Form.up(div6)
-'	Dim div7 As MiniHtml = Div.up(form1)
-'	div7.cls("relative")
-'	Dim span1 As MiniHtml = Div.up(div7)
-'	span1.cls("absolute -translate-y-1/2 pointer-events-none top-1/2 left-4")
-'	Dim svg1 As MiniHtml = Svg.up(span1)
-'	svg1.cls("fill-gray-500 dark:fill-gray-400")
-'	svg1.attr("width", 20).attr("height", 20)
-'	svg1.attr("viewBox", "0 0 20 20")
-'	Dim path1 As MiniHtml = Path.up(svg1)
-'	path1.attr("fill-rule", "evenodd").attr("clip-rule", "evenodd")
-'	path1.attr("d", "M3.04199 9.37381C3.04199 5.87712 5.87735 3.04218 9.37533 3.04218C12.8733 3.04218 15.7087 5.87712 15.7087 9.37381C15.7087 12.8705 12.8733 15.7055 9.37533 15.7055C5.87735 15.7055 3.04199 12.8705 3.04199 9.37381ZM9.37533 1.54218C5.04926 1.54218 1.54199 5.04835 1.54199 9.37381C1.54199 13.6993 5.04926 17.2055 9.37533 17.2055C11.2676 17.2055 13.0032 16.5346 14.3572 15.4178L17.1773 18.2381C17.4702 18.531 17.945 18.5311 18.2379 18.2382C18.5308 17.9453 18.5309 17.4704 18.238 17.1775L15.4182 14.3575C16.5367 13.0035 17.2087 11.2671 17.2087 9.37381C17.2087 5.04835 13.7014 1.54218 9.37533 1.54218Z")
-'	path1.attr("fill", "")
-'	path1.Mode = "self"
-'	Dim input1 As MiniHtml = Input.up(div7)
-'	input1.attr("type", "text")
-'	input1.attr("placeholder", "Search...")
-'	input1.attr("id", "search-input")
-'	input1.cls("dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-4 pl-[42px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[300px] dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30")
-'	input1.FormatAttributes = True
-'	Dim div8 As MiniHtml = Div.up(div6)
-'	Dim button1 As MiniHtml = Button.up(div8)
-'	button1.cls("text-theme-sm shadow-theme-xs inline-flex h-10 items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200")
-'	Dim svg1 As MiniHtml = Svg.up(button1)
-'	svg1.cls("stroke-current fill-white dark:fill-gray-800")
-'	svg1.attr("width", 20).attr("height", 20)
-'	svg1.attr("viewBox", "0 0 20 20")
-'	Dim path1 As MiniHtml = Path.up(svg1)
-'	path1.attr("d", "M2.29004 5.90393H17.7067")
-'	path1.attr("stroke", "").attr("stroke-width", "1.5").attr("stroke-linecap", "round").attr("stroke-linejoin", "round")
-'	Dim path2 As MiniHtml = Path.up(svg1)
-'	path2.attr("d", "M17.7075 14.0961H2.29085")
-'	path2.attr("stroke", "").attr("stroke-width", "1.5").attr("stroke-linecap", "round").attr("stroke-linejoin", "round")
-'	Dim path3 As MiniHtml = Path.up(svg1)
-'	path3.attr("d", "M12.0826 3.33331C13.5024 3.33331 14.6534 4.48431 14.6534 5.90414C14.6534 7.32398 13.5024 8.47498 12.0826 8.47498C10.6627 8.47498 9.51172 7.32398 9.51172 5.90415C9.51172 4.48432 10.6627 3.33331 12.0826 3.33331Z")
-'	path3.attr("stroke", "").attr("stroke-width", "1.5")
-'	Dim path4 As MiniHtml = Path.up(svg1)
-'	path4.attr("d", "M7.91745 11.525C6.49762 11.525 5.34662 12.676 5.34662 14.0959C5.34661 15.5157 6.49762 16.6667 7.91745 16.6667C9.33728 16.6667 10.4883 15.5157 10.4883 14.0959C10.4883 12.676 9.33728 11.525 7.91745 11.525Z")
-'	path4.attr("stroke", "").attr("stroke-width", "1.5")
-'	button1.textWrap(" Filter ")
-'	
-'	Dim div5 As MiniHtml = Div.up(div4)
-'	div5.cls("max-w-full overflow-x-auto custom-scrollbar")
-	
 	Dim table1 As MiniHtml = Table.cls("min-w-full")
 	Dim thead1 As MiniHtml = Thead.cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900").up(table1)
 	Dim trow1 As MiniHtml = Tr.up(thead1)
