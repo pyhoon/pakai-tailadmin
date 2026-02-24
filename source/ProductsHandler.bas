@@ -52,13 +52,11 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-
     Dim doc As MiniHtml
     doc.Initialize("")
     doc.Write("<!DOCTYPE html>")
     doc.Write(page1.build)
 	App.WriteHtml2(Response, doc.ToString, App.ctx)
-	'App.WriteHtml2(Response, page1.Build, App.ctx)
 End Sub
 
 Sub CreateTag (Name As String) As MiniHtml
@@ -302,7 +300,7 @@ Private Sub GitHubLink As MiniHtml
 	Dim div1 As MiniHtml = Div
 	div1.cls("text-center flex flex-col items-center justify-center")
 	Dim anchor1 As MiniHtml = Anchor.up(div1)
-	anchor1.attr("href", "https://github.com/pyhoon/pakai-server-b4j")
+	anchor1.attr("href", "https://github.com/pyhoon/pakai-tailadmin")
 	anchor1.cls("text-brand-500 mr-1")
 	anchor1.attr("aria-label", "github").attr("title", "GitHub").attr("target", "_blank")
 	
