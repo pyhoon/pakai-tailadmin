@@ -49,7 +49,6 @@ Private Sub RenderPage
 	'main1.LoadToast(ToastContainer)
 
 	Dim page1 As MiniHtml = main1.View
-	
     Dim doc As MiniHtml
     doc.Initialize("")
     doc.Write("<!DOCTYPE html>")
