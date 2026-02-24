@@ -1,8 +1,7 @@
 ﻿AppType=StandardJava
-Build1=Bundle,b4j.pakai,SQLite,hu2_acceptall,Bundle
-Build2=Default,b4j.pakai,SQLite,hu2_acceptall
-Build3=MariaDB,b4j.pakai,MariaDB,hu2_acceptall
-Build4=MySQL,b4j.pakai,MySQL,hu2_acceptall
+Build1=Default,b4j.pakai,SQLite,hu2_acceptall
+Build2=MariaDB,b4j.pakai,MariaDB,hu2_acceptall
+Build3=MySQL,b4j.pakai,MySQL,hu2_acceptall
 File1=config.example
 File2=mariadb.example
 File3=mysql.example
@@ -58,14 +57,14 @@ Sub Process_Globals
 End Sub
 
 ' <link>Open in browser|http://127.0.0.1:8080</link>
-' <link>Donate|https://paypal.me/aeric80/</link> | <link>Forum|https://www.b4x.com/android/forum/threads/project-template-pakai-server-v5.167788/)</link> | <link>GitHub|https://github.com/pyhoon/pakai-server-b4j</link>
+' <link>Donate|https://paypal.me/aeric80/</link> | <link>Forum|https://www.b4x.com/android/forum/threads/project-template-pakai-server-v5.167788/)</link> | <link>GitHub|https://github.com/pyhoon/pakai-tailadmin</link>
 Sub AppStart (Args() As String)
 	App.Initialize
 	App.LoadConfig
 	App.LogEnabled = True
 	#If Release
-	App.ssl.Enabled = True
-	App.RedirectToHttps = True
+	'App.ssl.Enabled = True
+	'App.RedirectToHttps = True
 	#End If
 	App.Get("", "ProductsHandler")
 	App.Get("/categories", "CategoriesHandler")
