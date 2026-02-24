@@ -7,9 +7,6 @@ Version=10.3
 ' Main View
 ' Version 6.00
 Sub Class_Globals
-	'Private App As EndsMeet
-	'Private AssetsFolder As String 
-	'Private ScriptFolder As String
 	Private mModal As MiniHtml
 	'Private mToast As MiniHtml
 	Private mContent As MiniHtml
@@ -18,9 +15,7 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize
-	'App = Main.App
-	'AssetsFolder = File.Combine(App.staticfiles.Folder, "assets")
-	'ScriptFolder = File.Combine(AssetsFolder, "scripts")
+
 End Sub
 
 Public Sub LoadContent (Tag1 As MiniHtml)
@@ -128,7 +123,6 @@ Private Sub PageHeader As MiniHtml
 	CreateTag("title").up(head1).text("$APP_TITLE$").multiline
 	CreateTag("link").up(head1).attr("rel", "icon").attr("href", "assets/images/favicon.ico")
 	head1.cdn("css", "assets/css/style.css")
-	'head1.linkcss("$SERVER_URL$/assets/css/main.css?v=$VERSION$")
 	head1.cdn("css", "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css")
 	Return head1
 End Sub
@@ -234,18 +228,9 @@ Private Sub PageBody As MiniHtml
 
 	body1.comment(" ===== Page Wrapper End ===== ")
 
-	#If Bundle
-	body1.script("$SERVER_URL$/assets/js/bootstrap.min.js")
-	body1.script("$SERVER_URL$/assets/js/htmx.min.js")
-	#Else
-	'body1.cdnScript("https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js", _
-	'"sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y")
 	body1.cdn2("js", "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js", _
 	"sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz", "anonymous")
-	#End If
-	'body1.script("$SERVER_URL$/assets/js/app.js")
-	'body1.script2(CreateMap("src": "bundle.js", "defer": ""))
-	CreateTag("script").up(body1).attr("src", "assets/js/bundle.js").attr3("defer")
+	body1.cdn("js", "assets/js/bundle.js").attr3("defer")
 	
 	body1.FormatAttributes = True
 	Return body1
@@ -721,7 +706,7 @@ Private Sub ContentAreaHeaderUserAreaDropDown As MiniHtml
 	
 	Dim List1 As MiniHtml = LI.up(UList1)
 	List1.multiline
-	Dim anchor1 As MiniHtml = Anchor.up(List1).attr("href", "profile.html")
+	Dim anchor1 As MiniHtml = Anchor.up(List1).attr("href", "#")'.attr("href", "profile.html")
 	anchor1.cls("group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	Dim svg1 As MiniHtml = Svg.up(anchor1)
 	svg1.cls("fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300")
@@ -737,7 +722,7 @@ Private Sub ContentAreaHeaderUserAreaDropDown As MiniHtml
 	
 	Dim List2 As MiniHtml = LI.up(UList1)
 	List2.multiline
-	Dim anchor2 As MiniHtml = Anchor.up(List2).attr("href", "messages.html")
+	Dim anchor2 As MiniHtml = Anchor.up(List2).attr("href", "#")'.attr("href", "messages.html")
 	anchor2.cls("group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	Dim svg2 As MiniHtml = Svg.up(anchor2)
 	svg2.cls("fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300")
@@ -753,7 +738,7 @@ Private Sub ContentAreaHeaderUserAreaDropDown As MiniHtml
 	
 	Dim List3 As MiniHtml = LI.up(UList1)
 	List3.multiline
-	Dim anchor3 As MiniHtml = Anchor.up(List3).attr("href", "settings.html")
+	Dim anchor3 As MiniHtml = Anchor.up(List3).attr("href", "#")'.attr("href", "settings.html")
 	anchor3.cls("group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	Dim svg3 As MiniHtml = Svg.up(anchor3)
 	svg3.cls("fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300")
@@ -787,14 +772,6 @@ End Sub
 Private Sub MainContent As MiniHtml
 	Dim main1 As MiniHtml = CreateTag("main")
 	'If mToast.IsInitialized Then mToast.up(main1)
-	
-'	Dim content1 As MiniHtml = Div.cls("content m-3").up(main1)
-'	Dim padding2 As MiniHtml = Div.cls("p-2").up(content1)
-'	Dim row1 As MiniHtml = Div.cls("row text-center align-items-center justify-content-center").up(padding2)
-'	Dim div1 As MiniHtml = Div.up(row1)
-'	H3.cls("mb-0").sty("font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif").up(div1).text("$HOME_TITLE$")
-'	Span.cls("small").text("Version: $VERSION$").up(div1)
-	
 	If mContent.IsInitialized Then mContent.up(main1)
 	If mSubContent.IsInitialized Then mSubContent.up(main1)
 	If mModal.IsInitialized Then mModal.up(main1)
