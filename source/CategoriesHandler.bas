@@ -5,7 +5,7 @@ Type=Class
 Version=10.3
 @EndOfDesignText@
 ' Categories Handler class
-' Version 6.00
+' Version 6.51
 Sub Class_Globals
 	Private DB As MiniORM
 	Private App As EndsMeet
@@ -378,7 +378,7 @@ Private Sub HandleCategories
 			Try
 				DB.SQL = DB.Open
 				DB.Table = "tbl_categories"
-				DB.Where = Array("category_name = ?")
+				DB.Conditions = Array("category_name = ?")
 				DB.Parameters = Array(name)
 				DB.Query
 				If DB.Found Then
@@ -417,7 +417,7 @@ Private Sub HandleCategories
 			End If
 
 			DB.Reset
-			DB.Where = Array("category_name = ?", "id <> ?")
+			DB.Conditions = Array("category_name = ?", "id <> ?")
 			DB.Parameters = Array(name, id)
 			DB.Query
 			If DB.Found Then
