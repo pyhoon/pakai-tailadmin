@@ -13,6 +13,5 @@ ModuleClosedNodes1=
 ModuleClosedNodes2=
 ModuleClosedNodes3=
 ModuleClosedNodes4=
-NavigationStack=Main,CurrentDateTime,229,0,ProductsHandler,CreateProductsTable,673,0,Main,AppStart,33,0,Main,ConfigureDatabase,119,0,Main,CreateDatabase,191,0,Main,AddUsersTable,200,0,Main,Process_Globals,40,0
 SelectedBuild=0
-VisibleModules=
+VisibleModules=1,2,3,4
