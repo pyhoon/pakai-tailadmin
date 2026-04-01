@@ -189,6 +189,10 @@ Private Sub ContentContainer As MiniHtml
 	input1.attr("type", "text")
 	input1.attr("placeholder", "Search...")
 	input1.attr("id", "search-input")
+	input1.attr("name", "keyword")
+	input1.attr("hx-get", "/api/products/search")
+	input1.attr("hx-trigger", "input changed delay:1s")
+	input1.attr("hx-target", "#products-container")	
 	input1.cls("dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-10 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-4 pl-[42px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[300px] dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30")
 	input1.FormatAttributes = True
 	Dim div9 As MiniHtml = Div.up(div7)
@@ -360,22 +364,21 @@ End Sub
 
 ' Return table HTML
 Private Sub HandleTable
-	App.WriteHtml(Response, CreateProductsTable.Build)
+	DB.Open
+	DB.Table = "tbl_products p"
+	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name name", "p.product_price price")
+	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
+	DB.OrderBy = CreateMap("p.id": "")
+	DB.Query
+	Dim data As List = DB.Results
+	DB.Close
+	Dim table1 As MiniHtml = CreateProductsTable(data)
+	App.WriteHtml(Response, table1.Build)
 End Sub
 
 ' Search product using keyword
 Private Sub HandleSearch
-	Dim table1 As MiniHtml = Table.cls("table table-bordered table-hover rounded small")
-	Dim thead1 As MiniHtml = table1.add(Thead.cls("table-light"))
-	thead1.add(Th.sty("text-align: right; width: 50px").text("#"))
-	thead1.add(Th.text("Code"))
-	thead1.add(Th.text("Name"))
-	thead1.add(Th.text("Category"))
-	thead1.add(Th.sty("text-align: right").text("Price"))
-	thead1.add(Th.sty("text-align: center; width: 120px").text("Actions"))
-	Dim tbody1 As MiniHtml = table1.add(Tbody)
-
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_products p"
 	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name AS name", "p.product_price price")
 	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
@@ -386,40 +389,9 @@ Private Sub HandleSearch
 	End If
 	DB.OrderBy = CreateMap("p.id": "")
 	DB.Query
-	For Each row As Map In DB.Results
-		Dim id As Int = row.Get("id")
-		Dim code As String = row.Get("code")
-		Dim name As String = row.Get("name")
-		Dim price As Double = row.Get("price")
-		Dim category As String = row.Get("category")
-
-		Dim tr1 As MiniHtml = Tr.up(tbody1)
-		tr1.add(Td.cls("align-middle").sty("text-align: right").text(id))
-		tr1.add(Td.cls("align-middle").text(code))
-		tr1.add(Td.cls("align-middle").text(name))
-		tr1.add(Td.cls("align-middle").text(category))
-		tr1.add(Td.cls("align-middle").sty("text-align: right").text(NumberFormat2(price, 1, 2, 2, True)))
-		Dim td1 As MiniHtml = tr1.add(Td.cls("align-middle text-center px-1 py-1"))
-
-		Dim anchor1 As MiniHtml = Anchor.cls("edit text-primary mx-2").up(td1)
-		anchor1.attr("hx-get", $"/api/products/edit/${id}"$)
-		anchor1.attr("hx-target", "#modal-content")
-		anchor1.attr("hx-trigger", "click")
-		anchor1.attr("data-bs-toggle", "modal")
-		anchor1.attr("data-bs-target", "#modal-container")
-		anchor1.add(Icon.cls("bi bi-pencil"))
-		anchor1.attr("title", "Edit")
-		
-		Dim anchor2 As MiniHtml = Anchor.cls("delete text-danger mx-2").up(td1)
-		anchor2.attr("hx-get", $"/api/products/delete/${id}"$)
-		anchor2.attr("hx-target", "#modal-content")
-		anchor2.attr("hx-trigger", "click")
-		anchor2.attr("data-bs-toggle", "modal")
-		anchor2.attr("data-bs-target", "#modal-container")
-		anchor2.add(Icon.cls("bi bi-trash3"))
-		anchor2.attr("title", "Delete")
-	Next
+	Dim data As List = DB.Results
 	DB.Close
+	Dim table1 As MiniHtml = CreateProductsTable(data)
 	App.WriteHtml(Response, table1.Build)
 End Sub
 
@@ -459,7 +431,7 @@ Private Sub HandleEditModal
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 		
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_products"
 	DB.Columns = Array("category_id category", "product_code code", "product_name name", "product_price price")
 	DB.WhereParam("id = ?", id)
@@ -510,7 +482,7 @@ Private Sub CreateCategoriesDropdown (selected As Int) As MiniHtml
 	select1.attr("hx-get", "/api/categories/list")
 	CreateTag("option").up(select1).attr("value", "").text("Select Category").attr3(IIf(selected < 1, "selected", ""))'.disabled
 
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_categories"
 	DB.Columns = Array("id", "category_name AS name")
 	DB.Query
@@ -535,7 +507,7 @@ Private Sub HandleDeleteModal
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 		
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_products"
 	DB.Columns = Array("id", "product_code AS code", "product_name AS name")
 	DB.WhereParam("id = ?", id)
@@ -580,7 +552,7 @@ Private Sub HandleProducts
 			
 			' Check conflict
 			Try
-				DB.SQL = DB.Open
+				DB.Open
 				DB.Table = "tbl_products"
 				DB.Conditions = Array("product_code = ?")
 				DB.Parameters = Array(code)
@@ -618,7 +590,7 @@ Private Sub HandleProducts
 				Return
 			End If
 			
-			DB.SQL = DB.Open
+			DB.Open
 			DB.Table = "tbl_products"
 			DB.Find(id)
 			If DB.Found = False Then
@@ -653,7 +625,7 @@ Private Sub HandleProducts
 			' Delete
 			Dim id As Int = Request.GetParameter("id")
 			
-			DB.SQL = DB.Open
+			DB.Open
 			DB.Table = "tbl_products"
 			DB.Find(id)
 			If DB.Found = False Then
@@ -675,7 +647,7 @@ Private Sub HandleProducts
 	End Select
 End Sub
 
-Private Sub CreateProductsTable As MiniHtml
+Private Sub CreateProductsTable (Data As List) As MiniHtml
 	Dim table1 As MiniHtml = Table.cls("min-w-full")
 	Dim thead1 As MiniHtml = Thead.up(table1).cls("border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900")
 	Dim trow1 As MiniHtml = Tr.up(thead1)
@@ -705,18 +677,10 @@ Private Sub CreateProductsTable As MiniHtml
 	CreateTag("p").up(thdiv6).cls("font-medium text-gray-500 text-theme-xs dark:text-gray-400").text("Actions")
 	
 	Dim tbody1 As MiniHtml = Tbody.up(table1).cls("divide-y divide-gray-100 dark:divide-gray-800")
-
-	DB.SQL = DB.Open
-	DB.Table = "tbl_products p"
-	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name name", "p.product_price price")
-	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
-	DB.OrderBy = CreateMap("p.id": "")
-	DB.Query
-	For Each row As Map In DB.Results
+	For Each row As Map In Data
 		Dim tr1 As MiniHtml = CreateProductsRow(row)
 		tr1.up(tbody1)
 	Next
-	DB.Close
 	Return table1
 End Sub
 
@@ -766,7 +730,7 @@ Private Sub CreateProductsRow (data As Map) As MiniHtml
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 		
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_products"
 	DB.Columns = Array("category_id category", "product_code code", "product_name name", "product_price price")
 	DB.WhereParam("id = ?", id)
@@ -836,9 +800,19 @@ Private Sub ShowAlert (message As String, status As String)
 End Sub
 
 Private Sub ShowToast (entity As String, action As String, message As String, status As String)
+	DB.Open
+	DB.Table = "tbl_products p"
+	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name name", "p.product_price price")
+	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
+	DB.OrderBy = CreateMap("p.id": "")
+	DB.Query
+	Dim data As List = DB.Results
+	DB.Close
+
+	Dim table1 As MiniHtml = CreateProductsTable(data)
 	Dim div1 As MiniHtml = Div.attr("id", "products-container")
 	div1.attr("hx-swap-oob", "true")
-	div1.add(CreateProductsTable)
+	div1.add(table1)
 
 	Dim script1 As MiniJs
 	script1.Initialize

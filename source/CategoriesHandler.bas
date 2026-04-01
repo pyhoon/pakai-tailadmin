@@ -304,7 +304,7 @@ Private Sub HandleEditModal
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 		
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_categories"
 	DB.Columns = Array("id", "category_name AS name")
 	DB.WhereParam("id = ?", id)
@@ -340,7 +340,7 @@ Private Sub HandleDeleteModal
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_categories"
 	DB.Columns = Array("id", "category_name AS name")
 	DB.WhereParam("id = ?", id)
@@ -376,7 +376,7 @@ Private Sub HandleCategories
 				Return
 			End If
 			Try
-				DB.SQL = DB.Open
+				DB.Open
 				DB.Table = "tbl_categories"
 				DB.Conditions = Array("category_name = ?")
 				DB.Parameters = Array(name)
@@ -406,7 +406,7 @@ Private Sub HandleCategories
 			' Update
 			Dim id As Int = Request.GetParameter("id")
 			Dim name As String = Request.GetParameter("name")
-			DB.SQL = DB.Open
+			DB.Open
 			DB.Table = "tbl_categories"
 			
 			DB.Find(id)
@@ -441,7 +441,7 @@ Private Sub HandleCategories
 		Case "DELETE"
 			' Delete
 			Dim id As Int = Request.GetParameter("id")
-			DB.SQL = DB.Open
+			DB.Open
 			DB.Table = "tbl_categories"
 			
 			DB.Find(id)
@@ -492,7 +492,7 @@ Private Sub CreateCategoriesTable As MiniHtml
 	
 	Dim tbody1 As MiniHtml = Tbody.up(table1).cls("divide-y divide-gray-100 dark:divide-gray-800")
 	
-	DB.SQL = DB.Open
+	DB.Open
 	DB.Table = "tbl_categories"
 	DB.Columns = Array("id", "category_name AS name")
 	DB.OrderBy = CreateMap("id": "")
