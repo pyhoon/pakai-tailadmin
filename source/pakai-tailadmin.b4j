@@ -61,7 +61,7 @@ Version=10.5
 #End Region
 Sub Process_Globals
 	Public DB 					As MiniORM
-	Public MS 					As ORMSettings
+	Public MS 					As MiniORMSettings
 	Public App 					As EndsMeet
 	Public Const COLOR_RED 		As Int = -65536
 	Public Const COLOR_BLUE 	As Int = -16776961
@@ -114,7 +114,7 @@ Public Sub ConfigureDatabase
 				MS.DBHost = ctx.GetDefault("DbHost", "")
 				MS.DBPort = ctx.GetDefault("DbPort", "")
 				MS.DBName = ctx.GetDefault("DbName", "")
-				MS.DriverClass = ctx.GetDefault("DriverClass", "")
+				MS.Driver = ctx.GetDefault("DriverClass", "")
 				MS.JdbcUrl = ctx.GetDefault("JdbcUrl", "")
 				MS.User = ctx.GetDefault("User", "")
 				MS.Password = ctx.GetDefault("Password", "")
