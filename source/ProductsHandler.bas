@@ -367,7 +367,7 @@ Private Sub HandleTable
 	DB.Open
 	DB.Table = "tbl_products p"
 	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name name", "p.product_price price")
-	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
+	DB.Join("JOIN", "tbl_categories c", Array("p.category_id = c.id"))
 	DB.OrderBy = CreateMap("p.id": "")
 	DB.Query
 	Dim data As List = DB.Results
@@ -381,7 +381,7 @@ Private Sub HandleSearch
 	DB.Open
 	DB.Table = "tbl_products p"
 	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name AS name", "p.product_price price")
-	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
+	DB.Join("JOIN", "tbl_categories c", Array("p.category_id = c.id"))
 	Dim keyword As String = Request.GetParameter("keyword")
 	If keyword <> "" Then
 		DB.Conditions = Array("p.product_code LIKE ? Or UPPER(p.product_name) LIKE ? Or UPPER(c.category_name) LIKE ?")
@@ -803,7 +803,7 @@ Private Sub ShowToast (entity As String, action As String, message As String, st
 	DB.Open
 	DB.Table = "tbl_products p"
 	DB.Columns = Array("p.id id", "p.category_id catid", "c.category_name category", "p.product_code code", "p.product_name name", "p.product_price price")
-	DB.Join = Array("tbl_categories c", "p.category_id = c.id")
+	DB.Join("JOIN", "tbl_categories c", Array("p.category_id = c.id"))
 	DB.OrderBy = CreateMap("p.id": "")
 	DB.Query
 	Dim data As List = DB.Results
