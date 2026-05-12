@@ -17,17 +17,23 @@ Library3=minihtml
 Library4=minijs
 Library5=miniormutils
 Module1=CategoriesHandler
-Module2=HttpsFilter
-Module3=MainView
-Module4=ProductsHandler
+Module10=ProductsView
+Module2=CategoriesModel
+Module3=CategoriesView
+Module4=HttpsFilter
+Module5=MainView
+Module6=MH
+Module7=ORM
+Module8=ProductsHandler
+Module9=ProductsModel
 NumberOfFiles=4
 NumberOfLibraries=5
-NumberOfModules=4
+NumberOfModules=10
 Version=10.5
 @EndOfDesignText@
 #Region Project Attributes
 ' Product: Pakai TailAdmin
-' Version: 6.51
+' Version: 6.80
 ' License: MIT License
 ' Developer: Poon Yip Hoon (Aeric)
 #CommandLineArgs:
@@ -41,31 +47,33 @@ Version=10.5
 #AdditionalJar: sqlite-jdbc-3.7.2
 #End If
 #Region Macros
-'Default - using jsdelivr CDNs
 '1 - Create $APPNAME$.b4j
 '2 - Open $APPNAME$.b4j
 '    -> Remove all macros for Step 1 to 5
-'3 - Create Pakai TailAdmin (6.51).b4xtemplate
+'3 - Create Pakai TailAdmin (6.80).b4xtemplate
 '4 - Copy to B4J Additional Libraries folder
 '5 - Check Release folder
-#Macro: Title, Step 1, ide://run?file=%COMSPEC%&args=/c&args=copy&args=%PROJECT%\Pakai-TailAdmin.b4j&args=%PROJECT%\$APPNAME$.b4j
-#Macro: Title, Step 2, ide://run?File=%WINDIR%\explorer.exe&Args=%PROJECT%\$APPNAME$.b4j
-#Macro: Title, Step 3, ide://run?file=%JAVABIN%\jar.exe&WorkingDirectory=..&args=-cMf&args=%PROJECT%\..\release\Pakai+TailAdmin+(6.51).b4xtemplate&args=Files&args=$APPNAME$.*&args=*.bas&args=libs.json&args=Objects\LICENSE&args=Objects\www\assets\images&args=Objects\www\assets\css\style.css&args=Objects\www\assets\js\bundle.js
-#Macro: Title, Step 4, ide://run?file=%COMSPEC%&args=/c&args=copy&args=%PROJECT%\..\release\*.b4xtemplate&args=%ADDITIONAL%
-#Macro: Title, Step 5, ide://run?file=%WINDIR%\SysWOW64\explorer.exe&args=%PROJECT%\..\release
+'#Macro: Title, Step 1, ide://run?File=%COMSPEC%&Args=/c&Args=copy&Args=%PROJECT%\Pakai-TailAdmin.b4j&Args=%PROJECT%\$APPNAME$.b4j
+'#Macro: Title, Step 2, ide://run?File=%WINDIR%\explorer.exe&Args=%PROJECT%\$APPNAME$.b4j
+'#Macro: Title, Step 3, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=%PROJECT%\..\release\Pakai+TailAdmin+(6.80).b4xtemplate&Args=Files&Args=$APPNAME$.*&Args=*.bas&Args=libs.json&Args=Objects\LICENSE&Args=Objects\www\assets\images&Args=Objects\www\assets\css\style.css&Args=Objects\www\assets\js\bundle.js
+'#Macro: Title, Step 4, ide://run?File=%COMSPEC%&Args=/c&Args=copy&Args=%PROJECT%\..\release\*.b4xtemplate&Args=%ADDITIONAL%
+'#Macro: Title, Step 5, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\..\release
 'For release
-#Macro: Title, GetLibraries, ide://run?file=%ADDITIONAL%\..\B4X\libget.jar&args=%PROJECT%&librariesrefresh=True
-'#Macro: Title, Backup, ide://run?file=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=%PROJECT_NAME%.zip&args=Files&args=Objects\www&args=Objects\config.*&args=Objects\LICENSE&args=*.bas&args=*.b4j&args=*.b4j.meta&args=libs.json
-'#Macro: Title, Objects, ide://run?file=%WINDIR%\SysWOW64\explorer.exe&args=%PROJECT%\Objects
-'#Macro: Title, Distribute, ide://run?file=%JAVABIN%\jar.exe&WorkingDirectory=../Objects&args=-cMf&args=Dist.zip&args=www&args=*.jar&args=*.ini
+#Macro: Title, ModelGenerator, ide://run?File=%ADDITIONAL%\modgen.jar&Args=%STATE1%&codesync=True
+#Macro: Title, GetLibraries, ide://run?File=%ADDITIONAL%\..\B4X\libget.jar&Args=%PROJECT%&librariesrefresh=True
+'#Macro: Title, Backup, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=..&Args=-cMf&Args=%PROJECT_NAME%.zip&Args=Files&Args=Objects\www&Args=Objects\config.*&Args=Objects\LICENSE&Args=*.bas&Args=*.b4j&Args=*.b4j.meta&Args=libs.json
+'#Macro: Title, Objects, ide://run?File=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%\Objects
+'#Macro: Title, Distribute, ide://run?File=%JAVABIN%\jar.exe&WorkingDirectory=../Objects&Args=-cMf&Args=Dist.zip&Args=www&Args=*.jar&Args=*.ini
 #End Region
+'Download tools:
+'<link>libget.jar|https://github.com/pyhoon/libget-b4j/releases/download/v2.60/libget.jar</link> | <link>modgen.jar|https://github.com/pyhoon/modgen-b4j/releases/download/v0.60/modgen.jar</link>
 Sub Process_Globals
-	Public DB 					As MiniORM
-	Public MS 					As MiniORMSettings
-	Public App 					As EndsMeet
-	Public Const COLOR_RED 		As Int = -65536
-	Public Const COLOR_BLUE 	As Int = -16776961
-	Public Const VERSION 		As String = "6.51"
+	Public DB 	As MiniORM
+	Public App 	As EndsMeet
+	Public Api	As ApiSettings
+	Public Const APP_VERSION As String = "1.00"
+	Type AlertInfo (Message As String, Status As String)
+	Type ToastInfo (Entity As String, Action As String, Message As String, Status As String)
 End Sub
 
 ' <link>Open in browser|http://127.0.0.1:8080</link>
@@ -78,184 +86,21 @@ Sub AppStart (Args() As String)
 	'App.ssl.Enabled = True
 	'App.RedirectToHttps = True
 	#End If
+	
 	App.Get("", "ProductsHandler")
 	App.Get("/categories", "CategoriesHandler")
-	App.Rest("/api/products/*", "ProductsHandler")
-	App.Rest("/api/categories/*", "CategoriesHandler")
+	App.Rest("/hx/products/*", "ProductsHandler")
+	App.Rest("/hx/categories/*", "CategoriesHandler")
+	
 	App.Start
 	App.LogStartupMessage
-	App.ctx.Put("VERSION", VERSION)
-	Log($"App version: ${VERSION}"$)
+	App.ctx.Put("VERSION", APP_VERSION)
+	Log($"App version: ${APP_VERSION}"$)
 	Log($"Open the following URL from your web browser"$)
 	Log(App.ServerUrl)
-	ConfigureDatabase
+	
+	ORM.InitDatabase
 	StartMessageLoop
-End Sub
-
-Public Sub ConfigureDatabase
-	Try
-		#If MariaDB
-		Dim dbvar As String = "mariadb"
-		#Else If MySQL
-		Dim dbvar As String = "mysql"
-		#Else
-		Dim dbvar As String = "sqlite"
-		#End If
-		If File.Exists(File.DirApp, $"${dbvar}.ini"$) = False Then
-			File.Copy(File.DirAssets, $"${dbvar}.example"$, File.DirApp, $"${dbvar}.ini"$)
-		End If
-		Dim ctx As Map = File.ReadMap(File.DirApp, $"${dbvar}.ini"$)
-		DB.Initialize
-		'DB.ShowExtraLogs = True
-		MS.Initialize
-		MS.DBType = ctx.GetDefault("DbType", "")
-		Select MS.DBType
-			Case DB.MARIADB, DB.MYSQL
-				MS.DBHost = ctx.GetDefault("DbHost", "")
-				MS.DBPort = ctx.GetDefault("DbPort", "")
-				MS.DBName = ctx.GetDefault("DbName", "")
-				MS.Driver = ctx.GetDefault("DriverClass", "")
-				MS.JdbcUrl = ctx.GetDefault("JdbcUrl", "")
-				MS.User = ctx.GetDefault("User", "")
-				MS.Password = ctx.GetDefault("Password", "")
-				MS.MaxPoolSize = ctx.GetDefault("MaxPoolSize", 0)
-			Case DB.SQLITE
-				MS.DBDir = ctx.GetDefault("DbDir", File.DirApp)
-				MS.DBFile = ctx.GetDefault("DbFile", "Pakai.db")
-				MS.JournalMode = "WAL"
-			Case Else
-				LogColor($"${MS.DBType} not supported!"$, COLOR_RED)
-				Log("Application is terminated.")
-				ExitApplication
-		End Select
-		DB.Settings = MS
-
-		LogColor("Checking database...", COLOR_BLUE)
-		Select DB.DbType
-			Case DB.SQLITE
-				Dim DBExist As Boolean = DB.Exist
-			Case DB.MARIADB, DB.MYSQL
-				Wait For (DB.InitSchema) Complete (Success As Boolean)
-				If Success = False Then
-					LogColor("Database initilialization failed!", COLOR_RED)
-					Log("Application is terminated.")
-					ExitApplication
-				End If
-				If DB.Test = False Then
-					LogColor("Database connection test failed!", COLOR_RED)
-					Log("Application is terminated.")
-					ExitApplication
-				End If
-				Wait For (DB.ExistAsync) Complete (DBExist As Boolean)
-			Case Else
-				LogColor("Database type is unknown!", COLOR_RED)
-				ExitApplication
-		End Select
-		If DBExist = False Then
-			LogColor($"${DB.DbType} database not existed!"$, COLOR_RED)
-			CreateDatabase
-			Return
-		End If
-		LogColor($"${DB.DbType} database existed!"$, COLOR_BLUE)
-		'AddUsersTable
-		If UsePool(DB.DbType) Then
-			DB.InitPool
-		End If
-	Catch
-		LogError(LastException.Message)
-		LogColor("Error checking database!", COLOR_RED)
-		Log("Application is terminated.")
-		ExitApplication
-	End Try
-End Sub
-
-Private Sub UsePool (Name As String) As Boolean
-	Dim DbArray() As String = Array As String(DB.MARIADB, DB.MYSQL)
-	Return DbArray.As(List).IndexOf(Name) > -1
-End Sub
-
-' Create Database Tables and Populate Data
-Private Sub CreateDatabase
-	LogColor("Creating database...", COLOR_BLUE)
-	If UsePool(DB.DbType) Then
-		Wait For (DB.CreateDatabaseAsync) Complete (Success As Boolean)
-	Else
-		Dim Success As Boolean = DB.CreateSQLite
-	End If
-	If Not(Success) Then
-		LogColor("Database creation failed!", COLOR_RED)
-		Return
-	End If
-	
-	LogColor("Creating tables...", COLOR_BLUE)
-	If UsePool(DB.DbType) Then
-		DB.InitPool
-	End If
-
-	DB.ShowExtraLogs = True
-	DB.UseTimestamps = True
-	DB.QueryAddToBatch = True
-	
-	DB.Table = "tbl_categories"
-	DB.Columns.Add(CreateMap("Name": "category_name", "Null": False))
-	DB.Create
-
-	DB.Columns = Array("category_name")
-	DB.Inserts = Array("Hardwares")
-	DB.Inserts = Array("Toys")
-
-	DB.Table = "tbl_products"
-	DB.Columns.Add(CreateMap("Name": "category_id", "Type": DB.INTEGER, "Null": False))
-	DB.Columns.Add(CreateMap("Name": "product_code", "Length": "12", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "product_name", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "product_price", "Type": DB.DECIMAL, "Length": "10,2", "Null": False, "Default": "0.00"))
-	DB.Columns.Add(CreateMap("Name": "product_image", "Type": DB.BLOB))
-	DB.Foreign = "category_id"
-	DB.References("tbl_categories", "id")
-	DB.Create
-	
-	DB.Columns = Array("category_id", "product_code", "product_name", "product_price")
-	DB.Inserts = Array(2, "T001", "Teddy Bear", 99.9)
-	DB.Inserts = Array(1, "H001", "Hammer", 15.75)
-	DB.Inserts = Array(2, "T002", "Optimus Prime", 1000)
-	
-	Wait For (DB.ExecuteBatchAsync) Complete (Success As Boolean)
-	If Success Then
-		LogColor("Database is created successfully!", COLOR_BLUE)
-	Else
-		LogColor("Database creation failed!", COLOR_RED)
-	End If
-	DB.Close
-End Sub
-
-' Add sample code for creating new table
-Public Sub AddUsersTable
-	LogColor("Creating users table...", COLOR_BLUE)
-	If UsePool(DB.DbType) Then
-		DB.InitPool
-	End If
-
-	DB.ShowExtraLogs = True
-	DB.UseTimestamps = True
-	DB.QueryAddToBatch = True
-
-	DB.Table = "tbl_users"
-	DB.Columns.Add(CreateMap("Name": "first_name", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "last_name", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "email", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "hash", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "salt", "Null": False))
-	DB.Columns.Add(CreateMap("Name": "admin", "Null": False, "Type": DB.INTEGER, "Default": "0"))
-	DB.Columns.Add(CreateMap("Name": "active", "Null": False, "Type": DB.INTEGER, "Default": "0"))
-	DB.Create
-	
-	Wait For (DB.ExecuteBatchAsync) Complete (Success As Boolean)
-	If Success Then
-		LogColor("Table is created successfully!", COLOR_BLUE)
-	Else
-		LogColor("Table creation failed!", COLOR_RED)
-	End If
-	DB.Close
 End Sub
 
 Public Sub CurrentDateTime As String
@@ -265,4 +110,22 @@ Public Sub CurrentDateTime As String
 	Dim Current As String = DateTime.Date(DateTime.Now)
 	DateTime.DateFormat = CurrentDateFormat
 	Return Current
+End Sub
+
+Public Sub CreateAlertInfo (Message As String, Status As String) As AlertInfo
+	Dim t1 As AlertInfo
+	t1.Initialize
+	t1.Message = Message
+	t1.Status = Status
+	Return t1
+End Sub
+
+Public Sub CreateToastInfo (Entity As String, Action As String, Message As String, Status As String) As ToastInfo
+	Dim t1 As ToastInfo
+	t1.Initialize
+	t1.Entity = Entity
+	t1.Action = Action
+	t1.Message = Message
+	t1.Status = Status
+	Return t1
 End Sub
