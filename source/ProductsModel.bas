@@ -73,7 +73,7 @@ Public Sub Search (keyword As String) As List
 		DB.Conditions = Array("UPPER(p.product_code) LIKE ? Or UPPER(p.product_name) LIKE ? Or UPPER(c.category_name) LIKE ?")
 		DB.Parameters = Array("%" & keyword.ToUpperCase & "%", "%" & keyword.ToUpperCase & "%", "%" & keyword.ToUpperCase & "%")
 	End If
-	DB.OrderBy = CreateMap("p.id": "DESC")
+	'DB.OrderBy = CreateMap("p.id": "DESC")
 	DB.Query
 	Return DB.Results
 End Sub
@@ -104,7 +104,7 @@ Public Sub Read As List
 	DB.Table = "tbl_products p"
 	DB.Columns = Array("p.id", "p.category_id", "c.category_name", "p.product_code", "p.product_name", "p.product_price")
 	DB.Join("", "tbl_categories c", Array("p.category_id = c.id"))
-	DB.OrderBy = CreateMap("p.id": "DESC")
+	'DB.OrderBy = CreateMap("p.id": "DESC")
 	DB.Query
 	Return DB.Results
 End Sub
