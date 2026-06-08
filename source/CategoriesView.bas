@@ -54,23 +54,26 @@ End Sub
 Public Sub Modal (Action As String) As String
 	Select Action
 		Case "Add"
-			Dim CacheName As String = "Categories Add Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalAdd)
-			End If
+			'Dim CacheName As String = "Categories Add Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalAdd)
+			'End If
+			Return ModalAdd.build
 		Case "Edit"
-			Dim CacheName As String = "Categories Edit Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalEdit)
-			End If
+			'Dim CacheName As String = "Categories Edit Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalEdit)
+			'End If
+			Return ModalEdit.build
 		Case "Delete"
-			Dim CacheName As String = "Categories Delete Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalDelete)
-			End If
+			'Dim CacheName As String = "Categories Delete Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalDelete)
+			'End If
+			Return ModalDelete.build
 	End Select
-	Dim modal1 As MiniHtml = ReadFromCache(CacheName)
-	Return modal1.build
+	'Dim modal1 As MiniHtml = ReadFromCache(CacheName)
+	'Return modal1.build
 End Sub
 
 Public Sub Alert (info As AlertInfo) As String
@@ -445,8 +448,8 @@ Private Sub ModalEdit As MiniHtml
 	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
 	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
 	button2.attr("type", "button")
-	button2.attr("data-bs-dismiss", "modal")
 	button2.text("Cancel")
+	button2.attr("@click", "isModalOpen = false")
 	
 	Return form1
 End Sub
@@ -500,7 +503,7 @@ Private Sub ModalDelete As MiniHtml
 	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
 	
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
-	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-600 shadow-theme-xs hover:bg-error-700 sm:w-auto")
+	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-700 sm:w-auto")
 	button1.attr("type", "submit")
 	button1.text("Delete")
 	
@@ -561,6 +564,7 @@ Private Sub ContainerToast As MiniHtml
 	Dim button1 As MiniHtml = MH.Button.up(div2)
 	button1.attr("type", "button")
 	button1.cls("btn-close btn-close-white me-2 m-auto")
-	button1.attr("data-bs-dismiss", "toast")
+	'button1.attr("data-bs-dismiss", "toast")
+	button1.attr("@click", "isModalOpen = false")
 	Return div1
 End Sub
