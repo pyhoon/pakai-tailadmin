@@ -64,14 +64,28 @@ End Sub
 Public Sub Modal (Action As String) As String
 	Select Action
 		Case "Add"
-			Return FormAdd.build
+			Dim CacheName As String = "Products Add Modal"
+			If ExistInCache(CacheName) = False Then
+				WriteToCache(CacheName, ModalAdd)
+			End If			
+			'Return FormAdd.build
 		Case "Edit"
-			Return FormEdit.build
+			Dim CacheName As String = "Products Edit Modal"
+			If ExistInCache(CacheName) = False Then
+				WriteToCache(CacheName, ModalEdit)
+			End If			
+			'Return ModalEdit.build
 		Case "Delete"
-			Return ModalDelete.build
+			Dim CacheName As String = "Products Delete Modal"
+			If ExistInCache(CacheName) = False Then
+				WriteToCache(CacheName, ModalDelete)
+			End If			
+			'Return ModalDelete.build
 		Case Else
 			Return ""
 	End Select
+	Dim modal1 As MiniHtml = ReadFromCache(CacheName)
+	Return modal1.build
 End Sub
 
 Public Sub Alert (info As AlertInfo) As String
@@ -108,7 +122,6 @@ Private Sub ProductsPage As MiniHtml
 	'main1.LoadModal(ContainerModal)
 	'main1.LoadToast(ContainerToast)
 	Dim page1 As MiniHtml = main1.Render
-
 	Return page1
 End Sub
 
@@ -230,18 +243,22 @@ Private Sub ContainerContent As MiniHtml
 End Sub
 
 Private Sub ContainerModal As MiniHtml
-	Dim modal1 As MiniHtml = MH.Div.attr("x-show", "isModalOpen")
+	Dim modal1 As MiniHtml = MH.Div
+	modal1.attr("x-show", "isModalOpen")
 	modal1.attr("id", "modal-container")
 	modal1.cls("fixed inset-0 flex items-center justify-center p-5 overflow-y-auto modal z-99999")
 	modal1.attr("x-cloak", "")
-	'modal1.sty("display: none")
+	
 	MH.Div.up(modal1).cls("modal-close-btn fixed inset-0 h-full w-full bg-gray-400/50 backdrop-blur-[32px]")
+	
 	Dim modalDialog As MiniHtml = MH.Div.up(modal1)
 	modalDialog.attr("@click.outside", "isModalOpen = false")
 	modalDialog.cls("relative w-full max-w-[584px] rounded-3xl bg-white p-6 dark:bg-gray-900 lg:p-10")
 	modalDialog.comment(" close btn ")
+	
 	Dim button1 As MiniHtml = MH.Button.up(modalDialog).attr("@click", "isModalOpen = false")
 	button1.cls("group absolute right-3 top-3 z-999 flex h-9.5 w-9.5 items-center justify-center rounded-full bg-gray-200 text-gray-500 transition-colors hover:bg-gray-300 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 sm:right-6 sm:top-6 sm:h-11 sm:w-11")
+	
 	Dim svg1 As MiniHtml = MH.Svg.up(button1)
 	svg1.cls("transition-colors fill-current group-hover:text-gray-600 dark:group-hover:text-gray-200")
 	svg1.attr("width", 24).attr("height", 24)
@@ -252,7 +269,7 @@ Private Sub ContainerModal As MiniHtml
 	path1.attr("fill", "")
 	
 	MH.Div.up(modalDialog).attr("id", "modal-content")
-	
+
 	Return modal1
 End Sub
 
@@ -399,7 +416,7 @@ Private Sub CategoriesDropdown (selected As Int) As MiniHtml
 	Return select1
 End Sub
 
-Private Sub FormAdd As MiniHtml
+Private Sub ModalAdd As MiniHtml
 	Dim form1 As MiniHtml = MH.Form
 	form1.attr("hx-post", "/hx/products")
 	form1.attr("hx-target", "#modal-messages")
@@ -408,9 +425,12 @@ Private Sub FormAdd As MiniHtml
 	
 	Dim modalBody As MiniHtml = MH.Div.up(form1)
 	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+	
 	MH.Div.up(modalBody).attr("id", "modal-messages").cls("col-span-2")
+	
 	Dim group1 As MiniHtml = MH.Div.up(modalBody).cls("col-span-1")
-	Dim label1 As MiniHtml = MH.Label.up(group1).attr("for", "category1")
+	Dim label1 As MiniHtml = MH.Label.up(group1)
+	label1.attr("for", "category1")
 	label1.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ")
 	MH.Span.up(label1).cls("text-danger").text("*")
 	
@@ -435,7 +455,11 @@ Private Sub FormAdd As MiniHtml
 
 	Dim group2 As MiniHtml = MH.Div.cls("col-span-1").up(modalBody)
 	MH.Label.up(group2).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Code ").add(MH.Span.cls("text-red").text("*"))
-	MH.Input.up(group2).attr("type", "text").attr("name", "code").required.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+	Dim input1 As MiniHtml = MH.Input.up(group2)
+	input1.attr("type", "text")
+	input1.attr("name", "code")
+	input1.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+	input1.required
 
 	Dim group3 As MiniHtml = MH.Div.cls("col-span-1").up(modalBody)
 	MH.Label.up(group3).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Name ").add(MH.Span.cls("text-danger").text("*"))
@@ -445,26 +469,55 @@ Private Sub FormAdd As MiniHtml
 	MH.Label.up(group4).cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Price ")
 	MH.Input.up(group4).attr("type", "text").attr("name", "price").cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
 	
-	Dim modalFooter As MiniHtml = MH.Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
-	MH.Button.up(modalFooter).text("Create").attr("type", "submit").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
-	MH.Button.up(modalFooter).text("Close").attr("type", "button").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
+	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
+	button1.attr("type", "submit")
+	button1.text("Create")
+	
+	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	button2.attr("type", "button")
+	button2.attr("@click", "isModalOpen = false")
+	button2.text("Close")
 
 	Return form1
 End Sub
 
-Private Sub FormEdit As MiniHtml
+Private Sub ModalEdit As MiniHtml
 	Dim form1 As MiniHtml = MH.Form
 	form1.attr("hx-put", "/hx/products")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
 
-	MH.H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Edit Product")
-	Dim modalBody As MiniHtml = MH.Div.up(form1).cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
-	MH.Div.up(modalBody).attr("id", "modal-messages").cls("col-span-2")
-	MH.Input.up(modalBody).attr("type", "hidden").attr("name", "id").attr("value", ProductMap.Get("id"))
+	Dim h41 As MiniHtml = MH.H4.up(form1)
+	h41.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90")
+	h41.text("Edit Product")
 	
-	Dim group1 As MiniHtml = MH.Div.up(modalBody).cls("col-span-1")
-	MH.Label.up(group1).attr("for", "category2").cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400").text("Category ").add(MH.Span.cls("text-danger").text("*"))
+	Dim modalBody As MiniHtml = MH.Div.up(form1)
+	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+	
+	Dim div1 As MiniHtml = MH.Div.up(modalBody)
+	div1.attr("id", "modal-messages")
+	div1.cls("col-span-2")
+	
+	Dim id1 As MiniHtml = MH.Input.up(modalBody)
+	id1.attr("type", "hidden")
+	id1.attr("name", "id")
+	id1.attr("value", ProductMap.Get("id"))
+	
+	Dim group1 As MiniHtml = MH.Div.up(modalBody)
+	group1.cls("col-span-1")
+	
+	Dim label1 As MiniHtml = MH.Label.up(group1)
+	label1.attr("for", "category2")
+	label1.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400")
+	label1.text("Category ")
+	Dim span1 As MiniHtml = MH.Span.up(label1)
+	span1.cls("text-danger").text("*")
+	
 	Dim div12 As MiniHtml = MH.Div.up(group1)
 	div12.cls("relative z-20 bg-transparent")
 	
@@ -497,9 +550,19 @@ Private Sub FormEdit As MiniHtml
 	Dim price As String = NumberFormat2(ProductMap.Get("product_price"), 1, 2, 2, False)
 	MH.Input.up(group4).attr("type", "text").attr("name", "price").attr("value", price).cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
 
-	Dim modalFooter As MiniHtml = MH.Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
-	MH.Button.up(modalFooter).attr("type", "submit").text("Update").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
-	MH.Button.up(modalFooter).attr("type", "button").text("Close").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
+	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
+	button1.attr("type", "submit")
+	button1.text("Update")
+	
+	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	button2.attr("type", "button")
+	button2.text("Close")
+	button2.attr("@click", "isModalOpen = false")
 
 	Return form1
 End Sub
@@ -509,21 +572,39 @@ Private Sub ModalDelete As MiniHtml
 	form1.attr("hx-delete", "/hx/products")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
-	MH.H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Delete Product")
+	
+	Dim h41 As MiniHtml = MH.H4.up(form1)
+	h41.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90")
+	h41.text("Delete Product")
 	
 	Dim modalBody As MiniHtml = MH.Div.up(form1)
 	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5")
-	MH.Div.up(modalBody).attr("id", "modal-messages")
-	Dim id1 As MiniHtml = MH.Input.up(modalBody)
-	id1.attr("type", "hidden")
-	id1.attr("name", "id")
-	id1.attr("value", ProductMap.Get("id"))
 	
-	MH.P.up(modalBody).cls("text-gray-700 dark:text-gray-400").text2($"Delete ${ProductMap.Get("product_name")} (${ProductMap.Get("product_code")})?"$)
+	Dim div1 As MiniHtml = MH.Div.up(modalBody)
+	div1.attr("id", "modal-messages")
+	
+	Dim input1 As MiniHtml = MH.Input.up(modalBody)
+	input1.attr("type", "hidden")
+	input1.attr("name", "id")
+	input1.attr("value", ProductMap.Get("id"))
+	
+	Dim p1 As MiniHtml = MH.P.up(modalBody)
+	p1.cls("text-gray-700 dark:text-gray-400")
+	p1.text2($"Delete ${ProductMap.Get("product_name")} (${ProductMap.Get("product_code")})?"$)
 
-	Dim modalFooter As MiniHtml = MH.Div.cls("flex items-center justify-end w-full gap-3 mt-6").up(form1)
-	MH.Button.up(modalFooter).attr("type", "submit").text("Delete").cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-600 shadow-theme-xs hover:bg-error-700 sm:w-auto")
-	MH.Button.up(modalFooter).attr("type", "button").text("Cancel").attr("@click", "isModalOpen = false").cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
+	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-600 shadow-theme-xs hover:bg-error-700 sm:w-auto")
+	button1.attr("type", "submit")
+	button1.text("Delete")
+	
+	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
+	button2.attr("type", "button")
+	button2.text("Cancel")
+	button2.attr("@click", "isModalOpen = false")
 	
 	Return form1
 End Sub
