@@ -74,8 +74,9 @@ Private Sub HandleModalEdit
 	If Model.Error.IsInitialized Then
 		ShowAlert($"Database error: ${Model.Error.Message}"$, "danger")
 		Return
-	End If	
-	App.WriteHtml2(Response, View.Modal("Edit"), Category)
+	End If
+	View.Category = Category
+	App.WriteHtml(Response, View.Modal("Edit"))
 End Sub
 
 ' Delete modal
@@ -91,8 +92,9 @@ Private Sub HandleModalDelete
 	If Model.Error.IsInitialized Then
 		ShowAlert($"Database error: ${Model.Error.Message}"$, "danger")
 		Return
-	End If	
-	App.WriteHtml2(Response, View.Modal("Delete"), Category)
+	End If
+	View.Category = Category
+	App.WriteHtml(Response, View.Modal("Delete"))
 End Sub
 
 ' Handle CRUD operations
