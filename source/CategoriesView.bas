@@ -8,6 +8,7 @@ Version=10.5
 ' Version 6.80
 Sub Class_Globals
 	Private App As EndsMeet
+	Private CategoryMap As Map
 End Sub
 
 Public Sub Initialize
@@ -31,6 +32,10 @@ End Sub
 
 Private Sub WriteToCache (Key As String, Value As Object)
 	App.ctx.Put(Key, Value)
+End Sub
+
+Public Sub setCategory (Data As Map)
+	CategoryMap = Data
 End Sub
 
 Public Sub Show As String
@@ -99,8 +104,8 @@ Private Sub CategoriesPage As MiniHtml
 	Dim main1 As MainView
 	main1.Initialize
 	main1.LoadContent(ContainerContent)
-	main1.LoadModal(ContainerModal)
-	main1.LoadToast(ContainerToast)
+	'main1.LoadModal(ContainerModal)
+	'main1.LoadToast(ContainerToast)
 	Dim page1 As MiniHtml = main1.Render
 	Return page1
 End Sub
@@ -108,8 +113,8 @@ End Sub
 Private Sub ContainerContent As MiniHtml
 	Dim content1 As MiniHtml = MH.Div.cls("mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6")
 	content1.comment(" Breadcrumb Start ")
-	Dim bread1 As MiniHtml = MH.Div.attr("x-data", "{ pageName: `Categories`}").up(content1)
-	Dim bread2 As MiniHtml = MH.Div.cls("flex flex-wrap items-center justify-between gap-3 mb-6").up(bread1)
+	Dim bread1 As MiniHtml = MH.Div.up(content1).attr("x-data", "{ pageName: `Categories`}")
+	Dim bread2 As MiniHtml = MH.Div.up(bread1).cls("flex flex-wrap items-center justify-between gap-3 mb-6")
 	Dim heading2 As MiniHtml = MH.H2.up(bread2)
 	heading2.cls("text-xl font-semibold text-gray-800 dark:text-white/90")
 	heading2.text("$HOME_TITLE$")
@@ -117,10 +122,12 @@ Private Sub ContainerContent As MiniHtml
 	version1.text("Version: $VERSION$").uniline
 	content1.comment(" Breadcrumb End ")
 	
-	Dim div1 As MiniHtml = MH.Div.cls("space-y-5 sm:space-y-6").up(content1)
-	Dim div2 As MiniHtml = MH.Div.cls("rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]").up(div1)
-	Dim div3 As MiniHtml = MH.Div.cls("border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800").up(div2)	
-	Dim div4 As MiniHtml = MH.Div.cls("overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]").up(div3)
+	Dim div1 As MiniHtml = MH.Div.up(content1).cls("space-y-5 sm:space-y-6")
+	Dim div2 As MiniHtml = MH.Div.up(div1).cls("rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]")
+	Dim div3 As MiniHtml = MH.Div.up(div2).cls("border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800")
+	Dim div4 As MiniHtml = MH.Div.up(div3).cls("overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]")
+	div4.attr("x-data", "{isModalOpen: false}")
+	div4.attr("@entity:changed", "isModalOpen = false")
 	
 	Dim div5 As MiniHtml = MH.Div.cls("flex flex-col gap-5 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between").up(div4)
 	Dim div6 As MiniHtml = MH.Div.up(div5)
@@ -197,6 +204,13 @@ Private Sub ContainerContent As MiniHtml
 	Dim button4 As MiniHtml = MH.Button.up(div11)
 	button4.cls("flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300")
 	button4.textWrap("Add Category")
+	button4.attr("hx-get", "/hx/categories/add")
+	button4.attr("hx-target", "#modal-content")
+	button4.attr("hx-swap", "innerHTML")
+	button4.attr("@click", "isModalOpen = true")
+	
+	' Load ContainerModal shell
+	ContainerModal.up(div4)
 	
 	Dim container1 As MiniHtml = MH.Div.up(div4)
 	container1.cls("max-w-full overflow-x-auto custom-scrollbar")
@@ -264,22 +278,38 @@ Private Sub CategoriesTableRow As MiniHtml
 	Dim td3 As MiniHtml = MH.Td.up(tr1).cls("px-6 py-3 whitespace-nowrap")
 	Dim div3 As MiniHtml = MH.Div.up(td3).cls("flex items-center justify-center")
 	
-	Dim anchor1 As MiniHtml = MH.Anchor.up(div3).cls("edit text-primary mx-2")
-	anchor1.attr("hx-get", "/hx/categories/edit/{id}")
+'	Dim anchor1 As MiniHtml = MH.Anchor.up(div3).cls("edit text-primary mx-2")
+'	anchor1.attr("hx-get", "/hx/categories/edit/{id}")
+'	anchor1.attr("hx-target", "#modal-content")
+'	anchor1.attr("hx-trigger", "click")
+'	anchor1.attr("data-bs-toggle", "modal")
+'	anchor1.attr("data-bs-target", "#modal-container")
+'	anchor1.add(MH.Icon.cls("bi bi-pencil"))
+'	anchor1.attr("title", "Edit")
+'		
+'	Dim anchor2 As MiniHtml = MH.Anchor.up(div3).cls("delete text-danger mx-2")
+'	anchor2.attr("hx-get", "/hx/categories/delete/{id}")
+'	anchor2.attr("hx-target", "#modal-content")
+'	anchor2.attr("hx-trigger", "click")
+'	anchor2.attr("data-bs-toggle", "modal")
+'	anchor2.attr("data-bs-target", "#modal-container")
+'	anchor2.add(MH.Icon.cls("bi bi-trash3"))
+'	anchor2.attr("title", "Delete")
+	
+	Dim anchor1 As MiniHtml = MH.Anchor.up(div3)
+	anchor1.cls("edit mx-2 cursor-pointer")
 	anchor1.attr("hx-target", "#modal-content")
-	anchor1.attr("hx-trigger", "click")
-	anchor1.attr("data-bs-toggle", "modal")
-	anchor1.attr("data-bs-target", "#modal-container")
-	anchor1.add(MH.Icon.cls("bi bi-pencil"))
+	anchor1.attr("hx-swap", "innerHTML")
+	anchor1.attr("@click", "isModalOpen = true")
+	MH.Icon.up(anchor1).cls("bi bi-pencil text-brand-600 hover:text-blue-300")
 	anchor1.attr("title", "Edit")
-		
-	Dim anchor2 As MiniHtml = MH.Anchor.up(div3).cls("delete text-danger mx-2")
-	anchor2.attr("hx-get", "/hx/categories/delete/{id}")
+	
+	Dim anchor2 As MiniHtml = MH.Anchor.up(div3)
+	anchor2.cls("delete mx-2 cursor-pointer")
 	anchor2.attr("hx-target", "#modal-content")
-	anchor2.attr("hx-trigger", "click")
-	anchor2.attr("data-bs-toggle", "modal")
-	anchor2.attr("data-bs-target", "#modal-container")
-	anchor2.add(MH.Icon.cls("bi bi-trash3"))
+	anchor2.attr("hx-swap", "innerHTML")
+	anchor2.attr("@click", "isModalOpen = true")
+	MH.Icon.up(anchor2).cls("bi bi-trash3 text-danger-600 hover:text-red-300")
 	anchor2.attr("title", "Delete")
 	
 	Return tr1
@@ -290,32 +320,60 @@ Private Sub ModalAdd As MiniHtml
 	form1.attr("hx-post", "/hx/categories")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
-	Dim modalHeader As MiniHtml = MH.Div.up(form1).cls("modal-header")
-	Dim h51 As MiniHtml = MH.H5.up(modalHeader)
-	h51.cls("modal-title").text("Add Category")
-	Dim close1 As MiniHtml = MH.Button.up(modalHeader)
-	close1.attr("type", "button")
-	close1.cls("btn-close")
-	close1.attr("data-bs-dismiss", "modal")
+	MH.H4.up(form1).cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90").text("Add Category")
+	
+'	Dim modalHeader As MiniHtml = MH.Div.up(form1).cls("modal-header")
+'	Dim h51 As MiniHtml = MH.H5.up(modalHeader)
+'	h51.cls("modal-title").text("Add Category")
+'	Dim close1 As MiniHtml = MH.Button.up(modalHeader)
+'	close1.attr("type", "button")
+'	close1.cls("btn-close")
+'	close1.attr("data-bs-dismiss", "modal")
+	
 	Dim modalBody As MiniHtml = MH.Div.up(form1)
-	modalBody.cls("modal-body")
+	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5")
+	
 	MH.Div.up(modalBody).attr("id", "modal-messages")
-	Dim group1 As MiniHtml = MH.Div.up(modalBody).cls("form-group")
+	
+	Dim group1 As MiniHtml = MH.Div.up(modalBody).cls("col-span-1") '.cls("form-group")
 	Dim label1 As MiniHtml = MH.Label.up(group1)
 	label1.attr("for", "name").text("Name ")
 	Dim span1 As MiniHtml = MH.Span.up(label1)
 	span1.cls("text-danger").text("*")
-	MH.Input.attr("type", "text").up(group1).attr("id", "name").attr("name", "name").cls("form-control").required
+	
+	Dim input1 As MiniHtml = MH.Input.attr("type", "text").up(group1)
+	input1.attr("id", "name")
+	input1.attr("name", "name")
+	'input1.cls("form-control").required
+	input1.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
+	input1.required
+	
 	Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
+	
+'	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+'	button1.attr("type", "submit")
+'	button1.cls("btn btn-success px-3")
+'	button1.text("Create")
+'	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+'	button2.attr("type", "button")
+'	button2.cls("btn btn-secondary px-3")
+'	button2.attr("data-bs-dismiss", "modal")
+'	button2.text("Cancel")
+	
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
 	button1.attr("type", "submit")
-	button1.cls("btn btn-success px-3")
 	button1.text("Create")
+	
 	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
 	button2.attr("type", "button")
-	button2.cls("btn btn-secondary px-3")
-	button2.attr("data-bs-dismiss", "modal")
-	button2.text("Cancel")
+	button2.attr("@click", "isModalOpen = false")
+	button2.text("Close")
+	
 	Return form1
 End Sub
 
@@ -324,46 +382,72 @@ Private Sub ModalEdit As MiniHtml
 	form1.attr("hx-put", "/hx/categories")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
-	Dim modalHeader As MiniHtml = MH.Div.up(form1)
-	modalHeader.cls("modal-header")
-	Dim h51 As MiniHtml = MH.H5.up(modalHeader)
-	h51.cls("modal-title").text("Edit Category")
-	Dim close1 As MiniHtml = MH.Button.up(modalHeader)
-	close1.attr("type", "button")
-	close1.cls("btn-close")
-	close1.attr("data-bs-dismiss", "modal")
+	
+	'Dim modalHeader As MiniHtml = MH.Div.up(form1)
+	'modalHeader.cls("modal-header")
+	'Dim h51 As MiniHtml = MH.H5.up(modalHeader)
+	'h51.cls("modal-title").text("Edit Category")
+	'Dim close1 As MiniHtml = MH.Button.up(modalHeader)
+	'close1.attr("type", "button")
+	'close1.cls("btn-close")
+	'close1.attr("data-bs-dismiss", "modal")
+	
+	Dim h41 As MiniHtml = MH.H4.up(form1)
+	h41.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90")
+	h41.text("Edit Category")
+	
 	Dim modalBody As MiniHtml = MH.Div.up(form1)
-	modalBody.cls("modal-body")
+	'modalBody.cls("modal-body")
+	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2")
+	
+	'Dim div1 As MiniHtml = MH.Div.up(modalBody)
+	'div1.attr("id", "modal-messages")
+	'Dim id1 As MiniHtml = MH.Input.up(modalBody)
+	'id1.attr("type", "hidden")
+	'id1.attr("name", "id")
+	'id1.attr("value", "$id$")
+	
 	Dim div1 As MiniHtml = MH.Div.up(modalBody)
 	div1.attr("id", "modal-messages")
+	div1.cls("col-span-2")
+	
 	Dim id1 As MiniHtml = MH.Input.up(modalBody)
 	id1.attr("type", "hidden")
 	id1.attr("name", "id")
-	id1.attr("value", "$id$")
+	id1.attr("value", CategoryMap.Get("id"))
+	
 	Dim group1 As MiniHtml = MH.Div.up(modalBody)
-	group1.cls("form-group")
+	group1.cls("col-span-1")
+	
 	Dim label1 As MiniHtml = MH.Label.up(group1)
 	label1.attr("for", "name")
+	label1.cls("mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400")
 	label1.text("Name ")
 	Dim span1 As MiniHtml = MH.Span.up(label1)
 	span1.cls("text-danger").text("*")
+	
 	Dim input1 As MiniHtml = MH.Input.up(group1)
+	input1.cls("dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800")
 	input1.attr("type", "text")
-	input1.cls("form-control")
 	input1.attr("id", "name")
 	input1.attr("name", "name")
-	input1.attr("value", "$category_name$")
+	input1.attr("value", CategoryMap.Get("category_name"))
 	input1.required
-	Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
+	
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto")
 	button1.attr("type", "submit")
-	button1.cls("btn btn-primary px-3")
 	button1.text("Update")
+	
 	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
 	button2.attr("type", "button")
-	button2.cls("btn btn-secondary px-3")
 	button2.attr("data-bs-dismiss", "modal")
 	button2.text("Cancel")
+	
 	Return form1
 End Sub
 
@@ -372,45 +456,91 @@ Private Sub ModalDelete As MiniHtml
 	form1.attr("hx-delete", "/hx/categories")
 	form1.attr("hx-target", "#modal-messages")
 	form1.attr("hx-swap", "innerHTML")
-	Dim modalHeader As MiniHtml = MH.Div.up(form1).cls("modal-header")
-	Dim h51 As MiniHtml = MH.H5.up(modalHeader)
-	h51.cls("modal-title").text("Delete Category")
-	Dim close1 As MiniHtml = MH.Button.up(modalHeader)
-	close1.attr("type", "button")
-	close1.cls("btn-close")
-	close1.attr("data-bs-dismiss", "modal")
-	Dim modalBody As MiniHtml = MH.Div.up(form1).cls("modal-body")
+	
+	'Dim modalHeader As MiniHtml = MH.Div.up(form1).cls("modal-header")
+	'Dim h51 As MiniHtml = MH.H5.up(modalHeader)
+	'h51.cls("modal-title").text("Delete Category")
+	'Dim close1 As MiniHtml = MH.Button.up(modalHeader)
+	'close1.attr("type", "button")
+	'close1.cls("btn-close")
+	'close1.attr("data-bs-dismiss", "modal")
+	
+	Dim h41 As MiniHtml = MH.H4.up(form1)
+	h41.cls("mb-6 text-lg font-medium text-gray-800 dark:text-white/90")
+	h41.text("Delete Category")
+	
+	Dim modalBody As MiniHtml = MH.Div.up(form1)
+	modalBody.cls("grid grid-cols-1 gap-x-6 gap-y-5")
+	
 	Dim div1 As MiniHtml = MH.Div.up(modalBody)
 	div1.attr("id", "modal-messages")
-	Dim input1 As MiniHtml = MH.Input.attr("type", "hidden")
+	
+	Dim input1 As MiniHtml = MH.Input.up(modalBody)
+	input1.attr("type", "hidden")
 	input1.attr("name", "id")
-	input1.attr("value", "$id$")
-	input1.up(modalBody)
-	MH.P.up(modalBody).text($"Delete $category_name$?"$)
-	Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
+	input1.attr("value", CategoryMap.Get("id"))
+
+	'MH.P.up(modalBody).text($"Delete $category_name$?"$)
+	Dim p1 As MiniHtml = MH.P.up(modalBody)
+	p1.cls("text-gray-700 dark:text-gray-400")
+	p1.text2($"Delete ${CategoryMap.Get("category_name")}?"$)
+	
+	'Dim modalFooter As MiniHtml = MH.Div.up(form1).cls("modal-footer")
+	'Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	'button1.attr("type", "submit")
+	'button1.cls("btn btn-danger px-3")
+	'button1.text("Delete")
+	'Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	'button2.attr("type", "button")
+	'button2.cls("btn btn-secondary px-3")
+	'button2.attr("data-bs-dismiss", "modal")
+	'button2.text("Cancel")
+	
+	Dim modalFooter As MiniHtml = MH.Div.up(form1)
+	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
+	
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
+	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-600 shadow-theme-xs hover:bg-error-700 sm:w-auto")
 	button1.attr("type", "submit")
-	button1.cls("btn btn-danger px-3")
 	button1.text("Delete")
+	
 	Dim button2 As MiniHtml = MH.Button.up(modalFooter)
+	button2.cls("flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 sm:w-auto")
 	button2.attr("type", "button")
-	button2.cls("btn btn-secondary px-3")
-	button2.attr("data-bs-dismiss", "modal")
 	button2.text("Cancel")
+	button2.attr("@click", "isModalOpen = false")
+	
 	Return form1
 End Sub
 
 Private Sub ContainerModal As MiniHtml
 	Dim modal1 As MiniHtml = MH.Div
+	modal1.attr("x-show", "isModalOpen")
 	modal1.attr("id", "modal-container")
-	modal1.cls("modal fade")
-	modal1.attr("tabindex", "-1")
-	modal1.attr("aria-hidden", "true")
-	Dim dialog1 As MiniHtml = MH.Div.up(modal1)
-	dialog1.cls("modal-dialog modal-dialog-centered")
-	Dim content1 As MiniHtml = MH.Div.up(dialog1)
-	content1.cls("modal-content")
-	content1.attr("id", "modal-content")
+	modal1.cls("fixed inset-0 flex items-center justify-center p-5 overflow-y-auto modal z-99999")
+	modal1.attr("x-cloak", "")
+	
+	MH.Div.up(modal1).cls("modal-close-btn fixed inset-0 h-full w-full bg-gray-400/50 backdrop-blur-[32px]")
+	
+	Dim modalDialog As MiniHtml = MH.Div.up(modal1)
+	modalDialog.attr("@click.outside", "isModalOpen = false")
+	modalDialog.cls("relative w-full max-w-[584px] rounded-3xl bg-white p-6 dark:bg-gray-900 lg:p-10")
+	modalDialog.comment(" close btn ")
+	
+	Dim button1 As MiniHtml = MH.Button.up(modalDialog).attr("@click", "isModalOpen = false")
+	button1.cls("group absolute right-3 top-3 z-999 flex h-9.5 w-9.5 items-center justify-center rounded-full bg-gray-200 text-gray-500 transition-colors hover:bg-gray-300 hover:text-gray-500 dark:bg-gray-800 dark:hover:bg-gray-700 sm:right-6 sm:top-6 sm:h-11 sm:w-11")
+	
+	Dim svg1 As MiniHtml = MH.Svg.up(button1)
+	svg1.cls("transition-colors fill-current group-hover:text-gray-600 dark:group-hover:text-gray-200")
+	svg1.attr("width", 24).attr("height", 24)
+	svg1.attr("viewBox", "0 0 24 24")
+	Dim path1 As MiniHtml = MH.Path.up(svg1)
+	path1.attr("fill-rule", "evenodd").attr("clip-rule", "evenodd")
+	path1.attr("d", "M6.04289 16.5413C5.65237 16.9318 5.65237 17.565 6.04289 17.9555C6.43342 18.346 7.06658 18.346 7.45711 17.9555L11.9987 13.4139L16.5408 17.956C16.9313 18.3466 17.5645 18.3466 17.955 17.956C18.3455 17.5655 18.3455 16.9323 17.955 16.5418L13.4129 11.9997L17.955 7.4576C18.3455 7.06707 18.3455 6.43391 17.955 6.04338C17.5645 5.65286 16.9313 5.65286 16.5408 6.04338L11.9987 10.5855L7.45711 6.0439C7.06658 5.65338 6.43342 5.65338 6.04289 6.0439C5.65237 6.43442 5.65237 7.06759 6.04289 7.45811L10.5845 11.9997L6.04289 16.5413Z")
+	path1.attr("fill", "")
+	
+	MH.Div.up(modalDialog).attr("id", "modal-content")
+	
 	Return modal1
 End Sub
 
