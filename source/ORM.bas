@@ -135,8 +135,8 @@ Private Sub CreateDatabase
 	MDB.Create
 
 	MDB.Columns = Array("category_name")
-	MDB.Inserts = Array("Hardwares")
-	MDB.Inserts = Array("Toys")
+	MDB.InsertWithParams = Array("Hardwares")
+	MDB.InsertWithParams = Array("Toys")
 
 	MDB.Table = "tbl_products"
 	MDB.Columns.Add(CreateMap("Name": "category_id", "Type": MDB.INTEGER, "Null": False))
@@ -149,9 +149,9 @@ Private Sub CreateDatabase
 	MDB.Create
 	
 	MDB.Columns = Array("category_id", "product_code", "product_name", "product_price")
-	MDB.Inserts = Array(2, "T001", "Teddy Bear", 99.9)
-	MDB.Inserts = Array(1, "H001", "Hammer", 15.75)
-	MDB.Inserts = Array(2, "T002", "Optimus Prime", 1000)
+	MDB.InsertWithParams = Array(2, "T001", "Teddy Bear", 99.9)
+	MDB.InsertWithParams = Array(1, "H001", "Hammer", 15.75)
+	MDB.InsertWithParams = Array(2, "T002", "Optimus Prime", 1000)
 	
 	Wait For (MDB.ExecuteBatchAsync) Complete (Success As Boolean)
 	If Success Then
