@@ -64,28 +64,28 @@ End Sub
 Public Sub Modal (Action As String) As String
 	Select Action
 		Case "Add"
-			Dim CacheName As String = "Products Add Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalAdd)
-			End If			
-			'Return FormAdd.build
+			'Dim CacheName As String = "Products Add Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalAdd)
+			'End If			
+			Return ModalAdd.build
 		Case "Edit"
-			Dim CacheName As String = "Products Edit Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalEdit)
-			End If			
-			'Return ModalEdit.build
+			'Dim CacheName As String = "Products Edit Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalEdit)
+			'End If			
+			Return ModalEdit.build
 		Case "Delete"
-			Dim CacheName As String = "Products Delete Modal"
-			If ExistInCache(CacheName) = False Then
-				WriteToCache(CacheName, ModalDelete)
-			End If			
-			'Return ModalDelete.build
+			'Dim CacheName As String = "Products Delete Modal"
+			'If ExistInCache(CacheName) = False Then
+			'	WriteToCache(CacheName, ModalDelete)
+			'End If			
+			Return ModalDelete.build
 		Case Else
 			Return ""
 	End Select
-	Dim modal1 As MiniHtml = ReadFromCache(CacheName)
-	Return modal1.build
+	'Dim modal1 As MiniHtml = ReadFromCache(CacheName)
+	'Return modal1.build
 End Sub
 
 Public Sub Alert (info As AlertInfo) As String
@@ -596,7 +596,7 @@ Private Sub ModalDelete As MiniHtml
 	modalFooter.cls("flex items-center justify-end w-full gap-3 mt-6")
 	
 	Dim button1 As MiniHtml = MH.Button.up(modalFooter)
-	button1.cls("flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-600 shadow-theme-xs hover:bg-error-700 sm:w-auto")
+	button1.cls("flex w-full justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-700 sm:w-auto")
 	button1.attr("type", "submit")
 	button1.text("Delete")
 	
@@ -627,6 +627,7 @@ Private Sub ContainerToast As MiniHtml
 	Dim close1 As MiniHtml = MH.Button.up(div2)
 	close1.attr("type", "button")
 	close1.cls("btn-close btn-close-white me-2 m-auto")
-	close1.attr("data-bs-dismiss", "toast")
+	'close1.attr("data-bs-dismiss", "toast")
+	close1.attr("@click", "isModalOpen = false")
 	Return div1
 End Sub
