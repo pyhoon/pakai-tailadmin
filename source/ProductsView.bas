@@ -129,7 +129,7 @@ Private Sub ContainerContent As MiniHtml
 	Dim div3 As MiniHtml = MH.Div.up(div2).cls("border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800")
 	Dim div4 As MiniHtml = MH.Div.up(div3).cls("overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-gray-800 dark:bg-white/[0.03]")
 	div4.attr("x-data", "{isModalOpen: false}")
-	div4.attr("@entity:changed.window", "isModalOpen = false")
+	div4.attr("@entity:changed", "isModalOpen = false")
 	
 	Dim div5 As MiniHtml = MH.Div.up(div4).cls("flex flex-col gap-5 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between")
 	Dim div6 As MiniHtml = MH.Div.up(div5)
